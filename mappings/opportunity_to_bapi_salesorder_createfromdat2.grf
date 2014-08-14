@@ -271,6 +271,10 @@
 <Field __sourcePath="{}/Opportunity/Description" containerType="SINGLE" label="Description" name="Description" type="string"/>
 <Field __sourcePath="{}/Opportunity/ForecastCategory" containerType="SINGLE" label="ForecastCategory" name="ForecastCategory" type="string"/>
 <Field __sourcePath="{}/Opportunity/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
+<Field __sourcePath="{}/Opportunity/CustomerNumber" containerType="SINGLE" label="CustomerNumber" name="CustomerNumber" type="string"/>
+<Field __sourcePath="{}/Opportunity/SalesOrganization" containerType="SINGLE" label="SalesOrganization" name="SalesOrganization" type="string"/>
+<Field __sourcePath="{}/Opportunity/DistributionChannel" containerType="SINGLE" label="DistributionChannel" name="DistributionChannel" type="string"/>
+<Field __sourcePath="{}/Opportunity/Division" containerType="SINGLE" label="Division" name="Division" type="string"/>
 </Record>
 </Metadata>
 <Metadata __index="7" __referenceCounter="4" __sourcePath="{}/Opportunity/OpportunityLineItems/records" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="bbfe07bb-96f6-4660-ae68-07ec2e6d20b1" _parent_id="__parent_id" _type="Input" id="6d878bd1-a11f-4a8f-b36e-d91ed8ff267a">
@@ -1175,6 +1179,10 @@
   <Mapping cloverField="Description" trim="true" xpath="Description"/>
   <Mapping cloverField="ForecastCategory" trim="true" xpath="ForecastCategory"/>
   <Mapping cloverField="Name" trim="true" xpath="Name"/>
+  <Mapping cloverField="CustomerNumber" trim="true" xpath="CustomerNumber"/>
+  <Mapping cloverField="SalesOrganization" trim="true" xpath="SalesOrganization"/>
+  <Mapping cloverField="DistributionChannel" trim="true" xpath="DistributionChannel"/>
+  <Mapping cloverField="Division" trim="true" xpath="Division"/>
   <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="OpportunityLineItems/records">
     <Mapping cloverField="Quantity" trim="true" xpath="Quantity"/>
     <Mapping cloverField="sap_external_id__c" trim="true" xpath="PricebookEntry/Product2/sap_x005fexternal_x005fid_x005f_x005fc"/>
@@ -2029,7 +2037,10 @@ output.DOC_TYPE = "TA";;
 
 output.PURCH_NO_C = input.Id;
 output.CURR_ISO = input.CurrencyIsoCode;
-output.REQ_DATE_H = input.CloseDate;]]></attr>
+output.REQ_DATE_H = input.CloseDate;
+output.SALES_ORG = input.SalesOrganization;
+output.DISTR_CHAN = input.DistributionChannel;
+output.DIVISION = input.Division;]]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'Opportunity' -&gt; 'ORDER_PARTNERS/row'" guiX="460" guiY="120" id="FOREACH_OPPORTUNITY_ROW" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL
@@ -2038,7 +2049,7 @@ output.__id = input.__id;
 output.__parent_id = input.__id;
 //END -> DO NOT REMOVE
 output.PARTN_ROLE = "AG";
-output.PARTN_NUMB = "0000001175";;]]></attr>
+output.PARTN_NUMB = input.CustomerNumber;;]]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'Opportunity' -&gt; 'ORDER_TEXT/row[0]'" guiX="460" guiY="520" id="FOREACH_OPPORTUNITY_ROW4" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL

@@ -247,7 +247,7 @@
 <Field __sourcePath="{}/Opportunity/salesOrderInSap/Items/ITM_x005fNUMBER" containerType="SINGLE" label="ITM_NUMBER" name="ITM_NUMBER" type="string"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="4" __sourcePath="{}/Opportunity" _dataStructure="OBJECT" _id="__id" _type="Input" id="aec83820-5271-4f5a-8cd2-005805928eb1">
+<Metadata __index="0" __referenceCounter="5" __sourcePath="{}/Opportunity" _dataStructure="OBJECT" _id="__id" _type="Input" id="aec83820-5271-4f5a-8cd2-005805928eb1">
 <Record fieldDelimiter="," name="Opportunity" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __sourcePath="{}/Opportunity/SALESDOCUMENT" containerType="SINGLE" label="SALESDOCUMENT" name="SALESDOCUMENT" type="string"/>
@@ -257,6 +257,10 @@
 <Field __sourcePath="{}/Opportunity/Name" containerType="SINGLE" label="Name" name="Name" type="string"/>
 <Field __sourcePath="{}/Opportunity/Description" containerType="SINGLE" label="Description" name="Description" type="string"/>
 <Field __sourcePath="{}/Opportunity/ForecastCategory" containerType="SINGLE" label="ForecastCategory" name="ForecastCategory" type="string"/>
+<Field __sourcePath="{}/Opportunity/CustomerNumber" containerType="SINGLE" label="CustomerNumber" name="CustomerNumber" type="string"/>
+<Field __sourcePath="{}/Opportunity/SalesOrganization" containerType="SINGLE" label="SalesOrganization" name="SalesOrganization" type="string"/>
+<Field __sourcePath="{}/Opportunity/DistributionChannel" containerType="SINGLE" label="DistributionChannel" name="DistributionChannel" type="string"/>
+<Field __sourcePath="{}/Opportunity/Division" containerType="SINGLE" label="Division" name="Division" type="string"/>
 <Field __sourcePath="{}/Opportunity/salesOrderInSap/Conditions/ITM_x005fNUMBER" containerType="SINGLE" label="ITM_NUMBER" name="ITM_NUMBER" type="string"/>
 </Record>
 </Metadata>
@@ -1001,7 +1005,7 @@
 <Field __index="864" __sourcePath="{}/BAPI_SALESORDER_CHANGE/tables/PARTNERCHANGES/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="865" __referenceCounter="0" __sourcePath="{}/BAPI_SALESORDER_CHANGE/tables/PARTNERS/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d24606dc-958e-4a45-ab19-74255b3a2250" _parent_id="__parent_id" _type="Output" id="37db17e0-0934-4c2d-815b-11e7766976e9">
+<Metadata __index="865" __referenceCounter="1" __sourcePath="{}/BAPI_SALESORDER_CHANGE/tables/PARTNERS/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d24606dc-958e-4a45-ab19-74255b3a2250" _parent_id="__parent_id" _type="Output" id="37db17e0-0934-4c2d-815b-11e7766976e9">
 <Record fieldDelimiter="," name="row" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -1142,6 +1146,10 @@
   <Mapping cloverField="Name" trim="true" xpath="Name"/>
   <Mapping cloverField="Description" trim="true" xpath="Description"/>
   <Mapping cloverField="ForecastCategory" trim="true" xpath="ForecastCategory"/>
+  <Mapping cloverField="CustomerNumber" trim="true" xpath="CustomerNumber"/>
+  <Mapping cloverField="SalesOrganization" trim="true" xpath="SalesOrganization"/>
+  <Mapping cloverField="DistributionChannel" trim="true" xpath="DistributionChannel"/>
+  <Mapping cloverField="Division" trim="true" xpath="Division"/>
   <Mapping cloverField="ITM_NUMBER" trim="true" xpath="salesOrderInSap/Conditions/ITM_x005fNUMBER"/>
   <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="salesOrderInSap/Items">
     <Mapping cloverField="ITM_NUMBER" trim="true" xpath="ITM_x005fNUMBER"/>
@@ -2015,6 +2023,47 @@
         <FUNCTION>$3.FUNCTION</FUNCTION>
       </row>
     </clover:element>
+    <PARTNERS>
+      <row id="$8.id" clover:inPort="8" clover:key="__parent_id" clover:parentKey="__id">
+        <clover:element clover:name="PARTN_ROLE">$8.PARTN_ROLE</clover:element>
+        <clover:element clover:name="PARTN_NUMB">$8.PARTN_NUMB</clover:element>
+        <clover:element clover:name="ITM_NUMBER">$8.ITM_NUMBER</clover:element>
+        <TITLE>$8.TITLE</TITLE>
+        <NAME>$8.NAME</NAME>
+        <clover:element clover:name="NAME_2">$8.NAME_2</clover:element>
+        <clover:element clover:name="NAME_3">$8.NAME_3</clover:element>
+        <clover:element clover:name="NAME_4">$8.NAME_4</clover:element>
+        <STREET>$8.STREET</STREET>
+        <COUNTRY>$8.COUNTRY</COUNTRY>
+        <clover:element clover:name="COUNTR_ISO">$8.COUNTR_ISO</clover:element>
+        <clover:element clover:name="POSTL_CODE">$8.POSTL_CODE</clover:element>
+        <clover:element clover:name="POBX_PCD">$8.POBX_PCD</clover:element>
+        <clover:element clover:name="POBX_CTY">$8.POBX_CTY</clover:element>
+        <CITY>$8.CITY</CITY>
+        <DISTRICT>$8.DISTRICT</DISTRICT>
+        <REGION>$8.REGION</REGION>
+        <clover:element clover:name="PO_BOX">$8.PO_BOX</clover:element>
+        <TELEPHONE>$8.TELEPHONE</TELEPHONE>
+        <TELEPHONE2>$8.TELEPHONE2</TELEPHONE2>
+        <TELEBOX>$8.TELEBOX</TELEBOX>
+        <clover:element clover:name="FAX_NUMBER">$8.FAX_NUMBER</clover:element>
+        <clover:element clover:name="TELETEX_NO">$8.TELETEX_NO</clover:element>
+        <clover:element clover:name="TELEX_NO">$8.TELEX_NO</clover:element>
+        <LANGU>$8.LANGU</LANGU>
+        <clover:element clover:name="LANGU_ISO">$8.LANGU_ISO</clover:element>
+        <clover:element clover:name="UNLOAD_PT">$8.UNLOAD_PT</clover:element>
+        <TRANSPZONE>$8.TRANSPZONE</TRANSPZONE>
+        <TAXJURCODE>$8.TAXJURCODE</TAXJURCODE>
+        <ADDRESS>$8.ADDRESS</ADDRESS>
+        <clover:element clover:name="PRIV_ADDR">$8.PRIV_ADDR</clover:element>
+        <clover:element clover:name="ADDR_TYPE">$8.ADDR_TYPE</clover:element>
+        <clover:element clover:name="ADDR_ORIG">$8.ADDR_ORIG</clover:element>
+        <clover:element clover:name="ADDR_LINK">$8.ADDR_LINK</clover:element>
+        <REFOBJTYPE>$8.REFOBJTYPE</REFOBJTYPE>
+        <REFOBJKEY>$8.REFOBJKEY</REFOBJKEY>
+        <REFLOGSYS>$8.REFLOGSYS</REFLOGSYS>
+      </row>
+    </PARTNERS>
     <clover:element clover:name="SCHEDULE_LINES">
       <row id="$7.id" clover:inPort="7" clover:key="__parent_id" clover:parentKey="__id">
         <clover:element clover:name="ITM_NUMBER">$7.ITM_NUMBER</clover:element>
@@ -2069,7 +2118,24 @@ output.CURRENCY_1 = "X";;
 output.NAME_1 = "X";;
 output.WAR_DATE_1 = "X";;
 output.REQ_DATE_H_1 = "X";;
-output.CURRENCY = input.CurrencyIsoCode;]]></attr>
+output.CURRENCY = input.CurrencyIsoCode;
+output.SALES_ORG = input.SalesOrganization;;
+
+
+output.SALES_ORG_1 = "X";;
+output.DISTR_CHAN_1 = "X";;
+output.DIVISION_1 = "X";;
+output.DIVISION = input.Division;
+output.DISTR_CHAN = input.DistributionChannel;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'Opportunity' -&gt; 'PARTNERS/row'" guiX="460" guiY="820" id="FOREACH_OPPORTUNITY_ROW" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__id;
+//END -> DO NOT REMOVE
+output.PARTN_NUMB = input.CustomerNumber;
+output.PARTN_ROLE = "AG";;]]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'Opportunity' -&gt; 'ORDER_TEXT/row[0]'" guiX="460" guiY="420" id="FOREACH_OPPORTUNITY_ROW3" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL
@@ -2139,6 +2205,7 @@ output.REQ_QTY = input.Quantity;]]></attr>
 <Edge debugMode="true" fromNode="BEAN_READER0:2" guiBendpoints="" id="Edge3" inPort="Port 0 (in)" metadata="fad2774c-83d5-46d1-af10-b1ad10765448" outPort="Port 2 (out)" toNode="SIMPLE_COPY2:0"/>
 <Edge debugMode="true" fromNode="FOREACH_ITEMS_ROW1:0" guiBendpoints="" id="Edge21" inPort="Port 5 (in)" metadata="874ab10f-03e8-46e6-a397-ce1036c53ba9" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:5"/>
 <Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_BAPI_SALESORDER_CHANGE:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="d24606dc-958e-4a45-ab19-74255b3a2250" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_ROW:0" guiBendpoints="" id="Edge6" inPort="Port 8 (in)" metadata="37db17e0-0934-4c2d-815b-11e7766976e9" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:8"/>
 <Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_ROW3:0" guiBendpoints="" id="Edge10" inPort="Port 1 (in)" metadata="0905b593-1e7f-49dc-81ec-bc688de53949" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:1"/>
 <Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_ROW4:0" guiBendpoints="" id="Edge12" inPort="Port 2 (in)" metadata="0905b593-1e7f-49dc-81ec-bc688de53949" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:2"/>
 <Edge debugMode="true" fromNode="FOREACH_OPPORTUNITY_ROW5:0" guiBendpoints="" id="Edge14" inPort="Port 3 (in)" metadata="0905b593-1e7f-49dc-81ec-bc688de53949" outPort="Port 0 (out)" toNode="EXT_XML_WRITER0:3"/>
@@ -2149,6 +2216,7 @@ output.REQ_QTY = input.Quantity;]]></attr>
 <Edge debugMode="true" fromNode="SIMPLE_COPY0:1" guiBendpoints="" id="Edge9" inPort="Port 0 (in)" metadata="aec83820-5271-4f5a-8cd2-005805928eb1" outPort="Port 1 (out)" toNode="FOREACH_OPPORTUNITY_ROW3:0"/>
 <Edge debugMode="true" fromNode="SIMPLE_COPY0:2" guiBendpoints="" id="Edge11" inPort="Port 0 (in)" metadata="aec83820-5271-4f5a-8cd2-005805928eb1" outPort="Port 2 (out)" toNode="FOREACH_OPPORTUNITY_ROW4:0"/>
 <Edge debugMode="true" fromNode="SIMPLE_COPY0:3" guiBendpoints="" id="Edge13" inPort="Port 0 (in)" metadata="aec83820-5271-4f5a-8cd2-005805928eb1" outPort="Port 3 (out)" toNode="FOREACH_OPPORTUNITY_ROW5:0"/>
+<Edge debugMode="true" fromNode="SIMPLE_COPY0:4" guiBendpoints="" id="Edge5" inPort="Port 0 (in)" metadata="aec83820-5271-4f5a-8cd2-005805928eb1" outPort="Port 4 (out)" toNode="FOREACH_OPPORTUNITY_ROW:0"/>
 <Edge debugMode="true" fromNode="SIMPLE_COPY1:0" guiBendpoints="" id="Edge20" inPort="Port 0 (in)" metadata="5b6130c0-171b-431c-a210-a11745b21758" outPort="Port 0 (out)" toNode="FOREACH_ITEMS_ROW1:0"/>
 <Edge debugMode="true" fromNode="SIMPLE_COPY2:0" guiBendpoints="" id="Edge15" inPort="Port 0 (in)" metadata="fad2774c-83d5-46d1-af10-b1ad10765448" outPort="Port 0 (out)" toNode="FOREACH_RECORDS_ROW:0"/>
 <Edge debugMode="true" fromNode="SIMPLE_COPY2:1" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="fad2774c-83d5-46d1-af10-b1ad10765448" outPort="Port 1 (out)" toNode="FOREACH_RECORDS_ROW1:0"/>
