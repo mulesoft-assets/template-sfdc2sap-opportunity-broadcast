@@ -30,8 +30,8 @@
 <Record fieldDelimiter="," name="Sales_Aread" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __sourcePath="{}/Sales_x0020Aread/SalesOrganization" containerType="SINGLE" label="SalesOrganization" name="SalesOrganization" type="string"/>
-<Field __sourcePath="{}/Sales_x0020Aread/DistrubutionChannel" containerType="SINGLE" label="DistrubutionChannel" name="DistrubutionChannel" type="string"/>
 <Field __sourcePath="{}/Sales_x0020Aread/Division" containerType="SINGLE" label="Division" name="Division" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Aread/DistributionChannel" containerType="SINGLE" label="DistributionChannel" name="DistributionChannel" type="string"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -53,21 +53,21 @@ output.__id = input.__id;
 output.__id = input.__id;
 //END -> DO NOT REMOVE
 output.SalesOrganization = input.SALESORG;
-output.DistrubutionChannel = input.DISTRCHN;
-output.Division = input.DIVISION;]]></attr>
+output.Division = input.DIVISION;
+output.DistributionChannel = input.DISTRCHN;]]></attr>
 </Node>
 <Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <clover:collection clover:name="Sales Aread" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
   <item clover:inPort="0">
     <SalesOrganization>$0.SalesOrganization</SalesOrganization>
-    <DistrubutionChannel>$0.DistrubutionChannel</DistrubutionChannel>
     <Division>$0.Division</Division>
+    <DistributionChannel>$0.DistributionChannel</DistributionChannel>
   </item>
   <item clover:inPort="1">
     <SalesOrganization>$1.SalesOrganization</SalesOrganization>
-    <DistrubutionChannel>$1.DistrubutionChannel</DistrubutionChannel>
     <Division>$1.Division</Division>
+    <DistributionChannel>$1.DistributionChannel</DistributionChannel>
   </item>
 </clover:collection>]]></attr>
 <attr name="_data_format"><![CDATA[MAP]]></attr>
