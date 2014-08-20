@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><Graph __version="3.5.0" author="martin" created="Wed Jul 30 11:31:19 CEST 2014" description="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order" guiVersion="3.4.4.P" id="1406795287379" licenseCode="Unlicensed" licenseType="Unknown" modified="Wed Jul 30 11:31:19 CEST 2014" modifiedBy="martin" name="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" revision="1.0" showComponentDetails="false">
 <Global>
-<Metadata __filteredMetadata="false" __index="0" __referenceCounter="1" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST" _dataStructure="OBJECT" _id="__id" _type="Input" id="e4b1d78f-bad3-4086-ba8a-91a59931a7dd">
+<Metadata __filteredMetadata="false" __index="0" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST" _dataStructure="OBJECT" _id="__id" _type="Input" id="e4b1d78f-bad3-4086-ba8a-91a59931a7dd">
 <Record fieldDelimiter="," name="BAPI_ISAORDER_GETDETAILEDLIST" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __index="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/import/I_BAPI_VIEW/HEADER" containerType="SINGLE" label="HEADER" name="HEADER" type="string"/>
@@ -28,6 +28,7 @@
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __sourcePath="{}/Sales_x0020Order/Conditions/ITM_x005fNUMBER" containerType="SINGLE" label="ITM_NUMBER" name="ITM_NUMBER" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/Conditions/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
 </Record>
 </Metadata>
 <Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order/Items" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d896b25c-46bc-492a-a062-72627b6dcbd0" _parent_id="__parent_id" _type="Output" id="58a0273d-86dd-4d8d-8664-3475e1ab40e1">
@@ -35,6 +36,15 @@
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
 <Field __sourcePath="{}/Sales_x0020Order/Items/ITM_x005fNUMBER" containerType="SINGLE" label="ITM_NUMBER" name="ITM_NUMBER" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/Items/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order/Partners" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d896b25c-46bc-492a-a062-72627b6dcbd0" _parent_id="__parent_id" _type="Output" id="bd1a1e45-17f8-4beb-9a94-bfd3bc0beb10">
+<Record fieldDelimiter="," name="Partners" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/Partners/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/Partners/customerId" containerType="SINGLE" label="customerId" name="customerId" type="string"/>
 </Record>
 </Metadata>
 <Metadata __index="18" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/EXTENSIONOUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="94758207-79ac-410d-9ea4-6bb5bfbd04af">
@@ -1176,7 +1186,7 @@
 <Field __index="1024" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_ITEMS_OUT/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="1025" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_PARTNERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="d739c4da-f8a6-4c32-828c-95ae71de8a0d">
+<Metadata __index="1025" __referenceCounter="1" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_PARTNERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="d739c4da-f8a6-4c32-828c-95ae71de8a0d">
 <Record fieldDelimiter="," name="row" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -1276,7 +1286,7 @@
 <Field __index="1112" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_SCHEDULES_OUT/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="1113" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_STATUSHEADERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="a9a626a4-c69c-4e8a-82a0-268094ba42cb">
+<Metadata __index="1113" __referenceCounter="1" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_STATUSHEADERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="a9a626a4-c69c-4e8a-82a0-268094ba42cb">
 <Record fieldDelimiter="," name="row" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -1406,7 +1416,7 @@
 <Field __index="1230" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_STATUSITEMS_OUT/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="1231" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTHEADERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="8660ca74-49b2-48f7-818c-5c022bb5ea97">
+<Metadata __index="1231" __referenceCounter="1" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTHEADERS_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="8660ca74-49b2-48f7-818c-5c022bb5ea97">
 <Record fieldDelimiter="," name="row" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -1447,7 +1457,7 @@
 <Field __index="1265" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTHEADERS_OUT/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="1266" __referenceCounter="0" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTLINES_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="588593b0-5330-4c1a-9d99-de0b1ee56787">
+<Metadata __index="1266" __referenceCounter="1" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTLINES_OUT/row" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" _parent_id="__parent_id" _type="Input" id="588593b0-5330-4c1a-9d99-de0b1ee56787">
 <Record fieldDelimiter="," name="row" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
@@ -1471,10 +1481,33 @@
 <Field __index="1277" __sourcePath="{}/BAPI_ISAORDER_GETDETAILEDLIST/tables/SALES_DOCUMENTS/row/@id" containerType="SINGLE" label="id" name="id" type="integer"/>
 </Record>
 </Metadata>
-<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order" _dataStructure="OBJECT" _id="__id" _type="Output" id="d896b25c-46bc-492a-a062-72627b6dcbd0">
+<Metadata __index="0" __referenceCounter="0" __sourcePath="{}/Sales_x0020Order" _dataStructure="OBJECT" _id="__id" _type="Output" id="d896b25c-46bc-492a-a062-72627b6dcbd0">
 <Record fieldDelimiter="," name="Sales_Order" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
 <Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
-<Field __sourcePath="{}/Sales_x0020Order/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="0" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order/StatusHeaders" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d896b25c-46bc-492a-a062-72627b6dcbd0" _parent_id="__parent_id" _type="Output" id="12351abe-b4db-4cd8-83d4-3d6672fd720a">
+<Record fieldDelimiter="," name="StatusHeaders" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/StatusHeaders/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/StatusHeaders/Status" containerType="SINGLE" label="Status" name="Status" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="1" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order/TextHeaders" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d896b25c-46bc-492a-a062-72627b6dcbd0" _parent_id="__parent_id" _type="Output" id="57f55d4c-17d0-4be3-89ec-ea8f7522edc8">
+<Record fieldDelimiter="," name="TextHeaders" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/TextHeaders/Id" containerType="SINGLE" label="Id" name="Id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/TextHeaders/TextName" containerType="SINGLE" label="TextName" name="TextName" type="string"/>
+</Record>
+</Metadata>
+<Metadata __index="3" __referenceCounter="1" __sourcePath="{}/Sales_x0020Order/TextLines" _dataStructure="SINGLE_DIMENSIONAL_COLLECTION" _id="__id" _metadataParentId="d896b25c-46bc-492a-a062-72627b6dcbd0" _parent_id="__parent_id" _type="Output" id="d99c1321-0343-4078-ba21-706688e6fa13">
+<Record fieldDelimiter="," name="TextLines" recordDelimiter="\n\\|\r\n\\|\r" type="delimited">
+<Field __artificialType="_parent_id" __systemManaged="true" name="__parent_id" type="string"/>
+<Field __artificialType="_id" __systemManaged="true" name="__id" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/TextLines/TextName" containerType="SINGLE" label="TextName" name="TextName" type="string"/>
+<Field __sourcePath="{}/Sales_x0020Order/TextLines/Line" containerType="SINGLE" label="Line" name="Line" type="string"/>
 </Record>
 </Metadata>
 <Dictionary>
@@ -1483,13 +1516,6 @@
 </Dictionary>
 </Global>
 <Phase number="0">
-<Node enabled="enabled" guiName="Foreach 'BAPI_ISAORDER_GETDETAILEDLIST' -&gt; 'Sales_x0020Order'" guiX="460" guiY="20" id="FOREACH_BAPI_ISAORDER_GETDETAILEDLIST_SALES_X0020ORDER" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
-<attr name="melScript"><![CDATA[//MEL
-//START -> DO NOT REMOVE
-output.__id = input.__id;
-//END -> DO NOT REMOVE
-]]></attr>
-</Node>
 <Node enabled="enabled" guiName="Foreach 'ORDER_CONDITIONS_OUT' -&gt; 'Conditions'" guiX="460" guiY="120" id="FOREACH_ROW_CONDITIONS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL
 //START -> DO NOT REMOVE
@@ -1497,7 +1523,7 @@ output.__id = input.__id;
 output.__parent_id = input.__parent_id;
 //END -> DO NOT REMOVE
 output.ITM_NUMBER = input.ITM_NUMBER;
-]]></attr>
+output.Id = input.SD_DOC;]]></attr>
 <attr name="__xpath_cond"><![CDATA[COND_TYPE/text() = 'PR00']]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'ORDER_ITEMS_IN' -&gt; 'Items'" guiX="460" guiY="220" id="FOREACH_ROW_ITEMS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
@@ -1507,162 +1533,203 @@ output.__id = input.__id;
 output.__parent_id = input.__parent_id;
 //END -> DO NOT REMOVE
 output.ITM_NUMBER = input.ITM_NUMBER;
-]]></attr>
+output.Id = input.DOC_NUMBER;]]></attr>
+<attr name="__xpath_cond"><![CDATA[MATERIAL/text()]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'row' -&gt; 'Partners'" guiX="460" guiY="520" id="FOREACH_ROW_PARTNERS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.Id = input.SD_DOC;
+output.customerId = input.CUSTOMER;]]></attr>
+<attr name="__xpath_cond"><![CDATA[PARTN_ROLE/text() = 'AG']]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'row' -&gt; 'StatusHeaders'" guiX="460" guiY="420" id="FOREACH_ROW_STATUS_HEADERS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.Id = input.SD_DOC;
+output.Status = input.ISA_DOC_STATUS;]]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'row' -&gt; 'TextHeaders'" guiX="460" guiY="420" id="FOREACH_ROW_TEXT_HEADERS" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.TextName = input.TEXT_NAME;
+output.Id = input.SD_DOC;]]></attr>
+<attr name="__xpath_cond"><![CDATA[TEXT_ID/text() = '0001' and LANGU_ISO/text() = 'EN']]></attr>
+</Node>
+<Node enabled="enabled" guiName="Foreach 'row' -&gt; 'TextLines'" guiX="460" guiY="320" id="FOREACH_ROW_TEXT_LINES" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
+<attr name="melScript"><![CDATA[//MEL
+//START -> DO NOT REMOVE
+output.__id = input.__id;
+output.__parent_id = input.__parent_id;
+//END -> DO NOT REMOVE
+output.Line = input.LINE;
+output.TextName = input.TEXT_NAME;]]></attr>
+<attr name="__xpath_cond"><![CDATA[TEXT_ID/text() = '0001' and LANGU_ISO/text() = 'EN']]></attr>
 </Node>
 <Node cacheInMemory="true" enabled="enabled" fileURL="dict:outputPayload" guiName="Map&lt;k,v&gt; WRITER" guiX="900" guiY="20" id="MAP_WRITER0" type="MAP_WRITER">
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<clover:element clover:name="Sales Order" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping" clover:inPort="0">
+<clover:element clover:name="Sales Order" xmlns:clover="http://www.cloveretl.com/ns/xmlmapping">
   <clover:collection clover:name="Conditions">
-    <item clover:inPort="1" clover:key="__parent_id" clover:parentKey="__id">
-      <clover:element clover:name="ITM_NUMBER">$1.ITM_NUMBER</clover:element>
+    <item clover:inPort="0">
+      <clover:element clover:name="ITM_NUMBER">$0.ITM_NUMBER</clover:element>
+      <Id>$0.Id</Id>
     </item>
   </clover:collection>
   <clover:collection clover:name="Items">
-    <item clover:inPort="2" clover:key="__parent_id" clover:parentKey="__id">
-      <clover:element clover:name="ITM_NUMBER">$2.ITM_NUMBER</clover:element>
+    <item clover:inPort="1">
+      <clover:element clover:name="ITM_NUMBER">$1.ITM_NUMBER</clover:element>
+      <Id>$1.Id</Id>
     </item>
   </clover:collection>
-  <Id>$0.Id</Id>
+  <clover:collection clover:name="Partners">
+    <item clover:inPort="5">
+      <Id>$5.Id</Id>
+      <customerId>$5.customerId</customerId>
+    </item>
+  </clover:collection>
+  <clover:collection clover:name="StatusHeaders">
+    <item clover:inPort="4">
+      <Id>$4.Id</Id>
+      <Status>$4.Status</Status>
+    </item>
+  </clover:collection>
+  <clover:collection clover:name="TextHeaders">
+    <item clover:inPort="3">
+      <Id>$3.Id</Id>
+      <TextName>$3.TextName</TextName>
+    </item>
+  </clover:collection>
+  <clover:collection clover:name="TextLines">
+    <item clover:inPort="2">
+      <TextName>$2.TextName</TextName>
+      <Line>$2.Line</Line>
+    </item>
+  </clover:collection>
 </clover:element>]]></attr>
 <attr name="_data_format"><![CDATA[MAP]]></attr>
 </Node>
 <Node charset="UTF-8" enabled="enabled" fileURL="dict:inputPayload" guiName="XML READER" guiX="20" guiY="20" id="XML_READER0" type="XML_READER">
 <attr name="xmlSchemaURL"><![CDATA[./src/main/resources/BAPI_ISAORDER_GETDETAILEDLIST.xsd]]></attr>
 <attr name="mapping"><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Context outPort="0" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST">
-  <Mapping cloverField="HEADER" trim="true" xpath="import/I_BAPI_VIEW/HEADER"/>
-  <Mapping cloverField="ITEM" trim="true" xpath="import/I_BAPI_VIEW/ITEM"/>
-  <Mapping cloverField="SDSCHEDULE" trim="true" xpath="import/I_BAPI_VIEW/SDSCHEDULE"/>
-  <Mapping cloverField="BUSINESS" trim="true" xpath="import/I_BAPI_VIEW/BUSINESS"/>
-  <Mapping cloverField="PARTNER" trim="true" xpath="import/I_BAPI_VIEW/PARTNER"/>
-  <Mapping cloverField="ADDRESS" trim="true" xpath="import/I_BAPI_VIEW/ADDRESS"/>
-  <Mapping cloverField="STATUS_H" trim="true" xpath="import/I_BAPI_VIEW/STATUS_H"/>
-  <Mapping cloverField="STATUS_I" trim="true" xpath="import/I_BAPI_VIEW/STATUS_I"/>
-  <Mapping cloverField="SDCOND" trim="true" xpath="import/I_BAPI_VIEW/SDCOND"/>
-  <Mapping cloverField="SDCOND_ADD" trim="true" xpath="import/I_BAPI_VIEW/SDCOND_ADD"/>
-  <Mapping cloverField="CONTRACT" trim="true" xpath="import/I_BAPI_VIEW/CONTRACT"/>
-  <Mapping cloverField="TEXT" trim="true" xpath="import/I_BAPI_VIEW/TEXT"/>
-  <Mapping cloverField="FLOW" trim="true" xpath="import/I_BAPI_VIEW/FLOW"/>
-  <Mapping cloverField="BILLPLAN" trim="true" xpath="import/I_BAPI_VIEW/BILLPLAN"/>
-  <Mapping cloverField="CONFIGURE" trim="true" xpath="import/I_BAPI_VIEW/CONFIGURE"/>
-  <Mapping cloverField="CREDCARD" trim="true" xpath="import/I_BAPI_VIEW/CREDCARD"/>
-  <Mapping cloverField="INCOMP_LOG" trim="true" xpath="import/I_BAPI_VIEW/INCOMP_LOG"/>
-  <Mapping cloverField="I_MEMORY_READ" trim="true" xpath="import/I_MEMORY_READ"/>
-  <Context generatedKey="__parent_id" outPort="1" parentKey="__id" sequenceField="__id" xpath="tables/ORDER_CONDITIONS_OUT/row[COND_TYPE/text() = 'PR00']">
+<Context xpath=".">
+  <Context outPort="5" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_PARTNERS_OUT/row[PARTN_ROLE/text() = 'AG']">
     <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
     <Mapping cloverField="SD_DOC" trim="true" xpath="SD_DOC"/>
-    <Mapping cloverField="CONDIT_NO" trim="true" xpath="CONDIT_NO"/>
     <Mapping cloverField="ITM_NUMBER" trim="true" xpath="ITM_NUMBER"/>
-    <Mapping cloverField="COND_ST_NO" trim="true" xpath="COND_ST_NO"/>
-    <Mapping cloverField="COND_COUNT" trim="true" xpath="COND_COUNT"/>
-    <Mapping cloverField="APPLICATIO" trim="true" xpath="APPLICATIO"/>
-    <Mapping cloverField="COND_TYPE" trim="true" xpath="COND_TYPE"/>
-    <Mapping cloverField="CONPRICDAT" trim="true" xpath="CONPRICDAT"/>
-    <Mapping cloverField="CALCTYPCON" trim="true" xpath="CALCTYPCON"/>
-    <Mapping cloverField="CONBASEVAL" trim="true" xpath="CONBASEVAL"/>
-    <Mapping cloverField="SDCURRENCY" trim="true" xpath="SDCURRENCY"/>
-    <Mapping cloverField="CURREN_ISO" trim="true" xpath="CURREN_ISO"/>
-    <Mapping cloverField="COND_VALUE" trim="true" xpath="COND_VALUE"/>
-    <Mapping cloverField="CURRENCY" trim="true" xpath="CURRENCY"/>
-    <Mapping cloverField="CURRENCISO" trim="true" xpath="CURRENCISO"/>
-    <Mapping cloverField="CONEXCHRAT" trim="true" xpath="CONEXCHRAT"/>
-    <Mapping cloverField="COND_P_UNT" trim="true" xpath="COND_P_UNT"/>
-    <Mapping cloverField="COND_D_UNT" trim="true" xpath="COND_D_UNT"/>
-    <Mapping cloverField="T_UNIT_ISO" trim="true" xpath="T_UNIT_ISO"/>
-    <Mapping cloverField="NUMCONVERT" trim="true" xpath="NUMCONVERT"/>
-    <Mapping cloverField="DENOMINATO" trim="true" xpath="DENOMINATO"/>
-    <Mapping cloverField="CONDTYPE" trim="true" xpath="CONDTYPE"/>
-    <Mapping cloverField="STAT_CON" trim="true" xpath="STAT_CON"/>
-    <Mapping cloverField="SCALETYPE" trim="true" xpath="SCALETYPE"/>
-    <Mapping cloverField="ACCRUALS" trim="true" xpath="ACCRUALS"/>
-    <Mapping cloverField="CONINVOLST" trim="true" xpath="CONINVOLST"/>
-    <Mapping cloverField="CONDORIGIN" trim="true" xpath="CONDORIGIN"/>
-    <Mapping cloverField="GROUPCOND" trim="true" xpath="GROUPCOND"/>
-    <Mapping cloverField="COND_UPDAT" trim="true" xpath="COND_UPDAT"/>
-    <Mapping cloverField="ACCESS_SEQ" trim="true" xpath="ACCESS_SEQ"/>
-    <Mapping cloverField="COND_NO" trim="true" xpath="COND_NO"/>
-    <Mapping cloverField="CONDCOUNT" trim="true" xpath="CONDCOUNT"/>
-    <Mapping cloverField="ACCOUNTKEY" trim="true" xpath="ACCOUNTKEY"/>
-    <Mapping cloverField="GL_ACCOUNT" trim="true" xpath="GL_ACCOUNT"/>
-    <Mapping cloverField="TAX_CODE" trim="true" xpath="TAX_CODE"/>
-    <Mapping cloverField="ACCOUNT_KE" trim="true" xpath="ACCOUNT_KE"/>
-    <Mapping cloverField="GLACCOUNT" trim="true" xpath="GLACCOUNT"/>
-    <Mapping cloverField="WITHTAXCOD" trim="true" xpath="WITHTAXCOD"/>
+    <Mapping cloverField="PARTN_ROLE" trim="true" xpath="PARTN_ROLE"/>
+    <Mapping cloverField="CUSTOMER" trim="true" xpath="CUSTOMER"/>
     <Mapping cloverField="VENDOR_NO" trim="true" xpath="VENDOR_NO"/>
-    <Mapping cloverField="CUSTNO_RR" trim="true" xpath="CUSTNO_RR"/>
-    <Mapping cloverField="ROUNDOFFDI" trim="true" xpath="ROUNDOFFDI"/>
-    <Mapping cloverField="CONDVALUE" trim="true" xpath="CONDVALUE"/>
-    <Mapping cloverField="CONDCNTRL" trim="true" xpath="CONDCNTRL"/>
-    <Mapping cloverField="CONDISACTI" trim="true" xpath="CONDISACTI"/>
-    <Mapping cloverField="CONDCLASS" trim="true" xpath="CONDCLASS"/>
-    <Mapping cloverField="CONDCOINHD" trim="true" xpath="CONDCOINHD"/>
-    <Mapping cloverField="INDIBASVAL" trim="true" xpath="INDIBASVAL"/>
-    <Mapping cloverField="INDICONVAL" trim="true" xpath="INDICONVAL"/>
-    <Mapping cloverField="FACTBASVAL" trim="true" xpath="FACTBASVAL"/>
-    <Mapping cloverField="STRUCTCOND" trim="true" xpath="STRUCTCOND"/>
-    <Mapping cloverField="FACTCONBAS" trim="true" xpath="FACTCONBAS"/>
-    <Mapping cloverField="PRICELEVEL" trim="true" xpath="PRICELEVEL"/>
-    <Mapping cloverField="CONDFORMUL" trim="true" xpath="CONDFORMUL"/>
-    <Mapping cloverField="SCALETYP" trim="true" xpath="SCALETYP"/>
-    <Mapping cloverField="INCREMSCAL" trim="true" xpath="INCREMSCAL"/>
-    <Mapping cloverField="INCREASCAL" trim="true" xpath="INCREASCAL"/>
-    <Mapping cloverField="INDEX_NO" trim="true" xpath="INDEX_NO"/>
-    <Mapping cloverField="INDEXNO" trim="true" xpath="INDEXNO"/>
-    <Mapping cloverField="CONDITIDX" trim="true" xpath="CONDITIDX"/>
-    <Mapping cloverField="PRINT_ID" trim="true" xpath="PRINT_ID"/>
-    <Mapping cloverField="FROREFSTEP" trim="true" xpath="FROREFSTEP"/>
-    <Mapping cloverField="FROMREFSTE" trim="true" xpath="FROMREFSTE"/>
-    <Mapping cloverField="CONDSUBTOT" trim="true" xpath="CONDSUBTOT"/>
-    <Mapping cloverField="COND_FORM" trim="true" xpath="COND_FORM"/>
-    <Mapping cloverField="COND_FORM1" trim="true" xpath="COND_FORM1"/>
-    <Mapping cloverField="MAKMANENTR" trim="true" xpath="MAKMANENTR"/>
-    <Mapping cloverField="ROUNDRULE" trim="true" xpath="ROUNDRULE"/>
-    <Mapping cloverField="PMSIGNAMOU" trim="true" xpath="PMSIGNAMOU"/>
-    <Mapping cloverField="CURRCONVER" trim="true" xpath="CURRCONVER"/>
-    <Mapping cloverField="CONDISMAND" trim="true" xpath="CONDISMAND"/>
-    <Mapping cloverField="RATEOFCHA1" trim="true" xpath="RATEOFCHA1"/>
-    <Mapping cloverField="RATEOFCHA2" trim="true" xpath="RATEOFCHA2"/>
-    <Mapping cloverField="RATEOFCHA3" trim="true" xpath="RATEOFCHA3"/>
-    <Mapping cloverField="RATEOFCHA4" trim="true" xpath="RATEOFCHA4"/>
-    <Mapping cloverField="RATEOFCHA5" trim="true" xpath="RATEOFCHA5"/>
-    <Mapping cloverField="RATEOFCHA6" trim="true" xpath="RATEOFCHA6"/>
-    <Mapping cloverField="TERMSOFPAY" trim="true" xpath="TERMSOFPAY"/>
-    <Mapping cloverField="MESSAGENO" trim="true" xpath="MESSAGENO"/>
-    <Mapping cloverField="INDIUPDATE" trim="true" xpath="INDIUPDATE"/>
-    <Mapping cloverField="SELECTION" trim="true" xpath="SELECTION"/>
-    <Mapping cloverField="SCALEBASIN" trim="true" xpath="SCALEBASIN"/>
-    <Mapping cloverField="SCALBASVAL" trim="true" xpath="SCALBASVAL"/>
-    <Mapping cloverField="UNITMEASUR" trim="true" xpath="UNITMEASUR"/>
-    <Mapping cloverField="TUNITISO" trim="true" xpath="TUNITISO"/>
-    <Mapping cloverField="CURRENCKEY" trim="true" xpath="CURRENCKEY"/>
-    <Mapping cloverField="CORRENISO" trim="true" xpath="CORRENISO"/>
-    <Mapping cloverField="CONDCURREN" trim="true" xpath="CONDCURREN"/>
-    <Mapping cloverField="CORR_ISO" trim="true" xpath="CORR_ISO"/>
-    <Mapping cloverField="CONBASVAL" trim="true" xpath="CONBASVAL"/>
-    <Mapping cloverField="CONDIVALUE" trim="true" xpath="CONDIVALUE"/>
-    <Mapping cloverField="CONDINCOMP" trim="true" xpath="CONDINCOMP"/>
-    <Mapping cloverField="CONDCONFIG" trim="true" xpath="CONDCONFIG"/>
-    <Mapping cloverField="CONDCHAMAN" trim="true" xpath="CONDCHAMAN"/>
-    <Mapping cloverField="PRICESOURC" trim="true" xpath="PRICESOURC"/>
-    <Mapping cloverField="VARIANCOND" trim="true" xpath="VARIANCOND"/>
-    <Mapping cloverField="LEVEL_BOM" trim="true" xpath="LEVEL_BOM"/>
-    <Mapping cloverField="PATH_BOM" trim="true" xpath="PATH_BOM"/>
-    <Mapping cloverField="STATOFAGRE" trim="true" xpath="STATOFAGRE"/>
-    <Mapping cloverField="REB_RETROA" trim="true" xpath="REB_RETROA"/>
-    <Mapping cloverField="INDIDELETE" trim="true" xpath="INDIDELETE"/>
-    <Mapping cloverField="AGREE_COND" trim="true" xpath="AGREE_COND"/>
-    <Mapping cloverField="CALCULBASE" trim="true" xpath="CALCULBASE"/>
-    <Mapping cloverField="SH_MAT_TYP" trim="true" xpath="SH_MAT_TYP"/>
-    <Mapping cloverField="ROUNDDIFCO" trim="true" xpath="ROUNDDIFCO"/>
-    <Mapping cloverField="QTYCONVERS" trim="true" xpath="QTYCONVERS"/>
-    <Mapping cloverField="CONCBUFFER" trim="true" xpath="CONCBUFFER"/>
-    <Mapping cloverField="RELACCASSI" trim="true" xpath="RELACCASSI"/>
-    <Mapping cloverField="INDIMATMAI" trim="true" xpath="INDIMATMAI"/>
-    <Mapping cloverField="TAXJURISDI" trim="true" xpath="TAXJURISDI"/>
-    <Mapping cloverField="CONEXCHRAT_V" trim="true" xpath="CONEXCHRAT_V"/>
+    <Mapping cloverField="PERSON_NO" trim="true" xpath="PERSON_NO"/>
+    <Mapping cloverField="CONTACT" trim="true" xpath="CONTACT"/>
+    <Mapping cloverField="ADDRESS" trim="true" xpath="ADDRESS"/>
+    <Mapping cloverField="UNLOAD_PT" trim="true" xpath="UNLOAD_PT"/>
+    <Mapping cloverField="COUNTRY" trim="true" xpath="COUNTRY"/>
+    <Mapping cloverField="COUNTRYISO" trim="true" xpath="COUNTRYISO"/>
+    <Mapping cloverField="ADDRE_INDI" trim="true" xpath="ADDRE_INDI"/>
+    <Mapping cloverField="ACC_1_TIME" trim="true" xpath="ACC_1_TIME"/>
+    <Mapping cloverField="CUSTHITYP" trim="true" xpath="CUSTHITYP"/>
+    <Mapping cloverField="PRIC_REL" trim="true" xpath="PRIC_REL"/>
+    <Mapping cloverField="REBATE_REL" trim="true" xpath="REBATE_REL"/>
+    <Mapping cloverField="LEVEL_NR" trim="true" xpath="LEVEL_NR"/>
+    <Mapping cloverField="DESC_PARTN" trim="true" xpath="DESC_PARTN"/>
+    <Mapping cloverField="TRANSPZONE" trim="true" xpath="TRANSPZONE"/>
+    <Mapping cloverField="ASSIGN_HI" trim="true" xpath="ASSIGN_HI"/>
+    <Mapping cloverField="VAT_REG_NO" trim="true" xpath="VAT_REG_NO"/>
+    <Mapping cloverField="FURTHERPAR" trim="true" xpath="FURTHERPAR"/>
+    <Mapping cloverField="PERS_NO" trim="true" xpath="PERS_NO"/>
+    <Mapping cloverField="CALEND_UPD" trim="true" xpath="CALEND_UPD"/>
     <Mapping cloverField="id" trim="true" xpath="@id"/>
   </Context>
-  <Context generatedKey="__parent_id" outPort="2" parentKey="__id" sequenceField="__id" xpath="tables/ORDER_ITEMS_OUT/row">
+  <Context outPort="4" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_STATUSHEADERS_OUT/row">
+    <Mapping cloverField="ISA_DOC_STATUS" trim="true" xpath="ISA_DOC_STATUS"/>
+    <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
+    <Mapping cloverField="SD_DOC" trim="true" xpath="SD_DOC"/>
+    <Mapping cloverField="REFDOCHDST" trim="true" xpath="REFDOCHDST"/>
+    <Mapping cloverField="TOTREFSTAT" trim="true" xpath="TOTREFSTAT"/>
+    <Mapping cloverField="CONFIRSTAT" trim="true" xpath="CONFIRSTAT"/>
+    <Mapping cloverField="DELIV_STAT" trim="true" xpath="DELIV_STAT"/>
+    <Mapping cloverField="DLV_STAT_H" trim="true" xpath="DLV_STAT_H"/>
+    <Mapping cloverField="TOTGOODSMV" trim="true" xpath="TOTGOODSMV"/>
+    <Mapping cloverField="BILLSTATUS" trim="true" xpath="BILLSTATUS"/>
+    <Mapping cloverField="BILLINGSTA" trim="true" xpath="BILLINGSTA"/>
+    <Mapping cloverField="ACCOUNTSTA" trim="true" xpath="ACCOUNTSTA"/>
+    <Mapping cloverField="OVERALLREJ" trim="true" xpath="OVERALLREJ"/>
+    <Mapping cloverField="PRC_STAT_H" trim="true" xpath="PRC_STAT_H"/>
+    <Mapping cloverField="OVERALLPIC" trim="true" xpath="OVERALLPIC"/>
+    <Mapping cloverField="OVERALL_WM" trim="true" xpath="OVERALL_WM"/>
+    <Mapping cloverField="TOTINCOMPL" trim="true" xpath="TOTINCOMPL"/>
+    <Mapping cloverField="TOTINCOMIT" trim="true" xpath="TOTINCOMIT"/>
+    <Mapping cloverField="TOTINCOMBI" trim="true" xpath="TOTINCOMBI"/>
+    <Mapping cloverField="GENINCOMHD" trim="true" xpath="GENINCOMHD"/>
+    <Mapping cloverField="HDIMCOMDEL" trim="true" xpath="HDIMCOMDEL"/>
+    <Mapping cloverField="HDINCOMBIL" trim="true" xpath="HDINCOMBIL"/>
+    <Mapping cloverField="DOCIMCOMPR" trim="true" xpath="DOCIMCOMPR"/>
+    <Mapping cloverField="SD_DOC_CAT" trim="true" xpath="SD_DOC_CAT"/>
+    <Mapping cloverField="SDDOCOBJ" trim="true" xpath="SDDOCOBJ"/>
+    <Mapping cloverField="CH_ON" trim="true" xpath="CH_ON"/>
+    <Mapping cloverField="BILTOTSTAT" trim="true" xpath="BILTOTSTAT"/>
+    <Mapping cloverField="INVOICSTAT" trim="true" xpath="INVOICSTAT"/>
+    <Mapping cloverField="CUSTRESHD1" trim="true" xpath="CUSTRESHD1"/>
+    <Mapping cloverField="CUSTRESHD2" trim="true" xpath="CUSTRESHD2"/>
+    <Mapping cloverField="CUSTRESHD3" trim="true" xpath="CUSTRESHD3"/>
+    <Mapping cloverField="CUSTRESHD4" trim="true" xpath="CUSTRESHD4"/>
+    <Mapping cloverField="CUSTRESHD5" trim="true" xpath="CUSTRESHD5"/>
+    <Mapping cloverField="CUSTRESIT1" trim="true" xpath="CUSTRESIT1"/>
+    <Mapping cloverField="CUSTRESIT2" trim="true" xpath="CUSTRESIT2"/>
+    <Mapping cloverField="CUSTRESIT3" trim="true" xpath="CUSTRESIT3"/>
+    <Mapping cloverField="CUSTRESIT4" trim="true" xpath="CUSTRESIT4"/>
+    <Mapping cloverField="CUSTRESIT5" trim="true" xpath="CUSTRESIT5"/>
+    <Mapping cloverField="TOTSTATIT" trim="true" xpath="TOTSTATIT"/>
+    <Mapping cloverField="STATSTACLC" trim="true" xpath="STATSTACLC"/>
+    <Mapping cloverField="STATDYNCLC" trim="true" xpath="STATDYNCLC"/>
+    <Mapping cloverField="STATCREDCH" trim="true" xpath="STATCREDCH"/>
+    <Mapping cloverField="STATCRECH1" trim="true" xpath="STATCRECH1"/>
+    <Mapping cloverField="STATCRECH2" trim="true" xpath="STATCRECH2"/>
+    <Mapping cloverField="STATCRECH3" trim="true" xpath="STATCRECH3"/>
+    <Mapping cloverField="STATCRECH4" trim="true" xpath="STATCRECH4"/>
+    <Mapping cloverField="STATCRECH5" trim="true" xpath="STATCRECH5"/>
+    <Mapping cloverField="STATCRECH6" trim="true" xpath="STATCRECH6"/>
+    <Mapping cloverField="STATCRECH7" trim="true" xpath="STATCRECH7"/>
+    <Mapping cloverField="STATCRECH8" trim="true" xpath="STATCRECH8"/>
+    <Mapping cloverField="STATCRECH9" trim="true" xpath="STATCRECH9"/>
+    <Mapping cloverField="STATCRECHA" trim="true" xpath="STATCRECHA"/>
+    <Mapping cloverField="STATCRECHB" trim="true" xpath="STATCRECHB"/>
+    <Mapping cloverField="STATCRECHC" trim="true" xpath="STATCRECHC"/>
+    <Mapping cloverField="TOTSTATCCH" trim="true" xpath="TOTSTATCCH"/>
+    <Mapping cloverField="TRNSPLANST" trim="true" xpath="TRNSPLANST"/>
+    <Mapping cloverField="QUITTSTAT" trim="true" xpath="QUITTSTAT"/>
+    <Mapping cloverField="CONFIRMSTA" trim="true" xpath="CONFIRMSTA"/>
+    <Mapping cloverField="SAPRELEASE" trim="true" xpath="SAPRELEASE"/>
+    <Mapping cloverField="TOTINCOMI" trim="true" xpath="TOTINCOMI"/>
+    <Mapping cloverField="TOTINCOMI1" trim="true" xpath="TOTINCOMI1"/>
+    <Mapping cloverField="TOTINCOMI2" trim="true" xpath="TOTINCOMI2"/>
+    <Mapping cloverField="HDINCOMPL" trim="true" xpath="HDINCOMPL"/>
+    <Mapping cloverField="HDINCOMPL1" trim="true" xpath="HDINCOMPL1"/>
+    <Mapping cloverField="HDINCOMPL2" trim="true" xpath="HDINCOMPL2"/>
+    <Mapping cloverField="HDINCOMPL3" trim="true" xpath="HDINCOMPL3"/>
+    <Mapping cloverField="CREDCHECK" trim="true" xpath="CREDCHECK"/>
+    <Mapping cloverField="DELAYSTAT" trim="true" xpath="DELAYSTAT"/>
+    <Mapping cloverField="SHIPPUNIT" trim="true" xpath="SHIPPUNIT"/>
+    <Mapping cloverField="DISTRISTAT" trim="true" xpath="DISTRISTAT"/>
+    <Mapping cloverField="REVDETSTAT" trim="true" xpath="REVDETSTAT"/>
+    <Mapping cloverField="INDIDOCACH" trim="true" xpath="INDIDOCACH"/>
+    <Mapping cloverField="TOBILBLOST" trim="true" xpath="TOBILBLOST"/>
+    <Mapping cloverField="TODELBLOST" trim="true" xpath="TODELBLOST"/>
+    <Mapping cloverField="TOBLOCKSTA" trim="true" xpath="TOBLOCKSTA"/>
+    <Mapping cloverField="LEBHEADSTA" trim="true" xpath="LEBHEADSTA"/>
+    <Mapping cloverField="FMSTATUS" trim="true" xpath="FMSTATUS"/>
+    <Mapping cloverField="id" trim="true" xpath="@id"/>
+  </Context>
+  <Context outPort="1" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_ITEMS_OUT/row[MATERIAL/text()]">
     <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
     <Mapping cloverField="DOC_NUMBER" trim="true" xpath="DOC_NUMBER"/>
     <Mapping cloverField="ITM_NUMBER" trim="true" xpath="ITM_NUMBER"/>
@@ -1887,16 +1954,185 @@ output.ITM_NUMBER = input.ITM_NUMBER;
     <Mapping cloverField="TAXLAWPIS" trim="true" xpath="TAXLAWPIS"/>
     <Mapping cloverField="id" trim="true" xpath="@id"/>
   </Context>
+  <Context outPort="0" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_CONDITIONS_OUT/row[COND_TYPE/text() = 'PR00']">
+    <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
+    <Mapping cloverField="SD_DOC" trim="true" xpath="SD_DOC"/>
+    <Mapping cloverField="CONDIT_NO" trim="true" xpath="CONDIT_NO"/>
+    <Mapping cloverField="ITM_NUMBER" trim="true" xpath="ITM_NUMBER"/>
+    <Mapping cloverField="COND_ST_NO" trim="true" xpath="COND_ST_NO"/>
+    <Mapping cloverField="COND_COUNT" trim="true" xpath="COND_COUNT"/>
+    <Mapping cloverField="APPLICATIO" trim="true" xpath="APPLICATIO"/>
+    <Mapping cloverField="COND_TYPE" trim="true" xpath="COND_TYPE"/>
+    <Mapping cloverField="CONPRICDAT" trim="true" xpath="CONPRICDAT"/>
+    <Mapping cloverField="CALCTYPCON" trim="true" xpath="CALCTYPCON"/>
+    <Mapping cloverField="CONBASEVAL" trim="true" xpath="CONBASEVAL"/>
+    <Mapping cloverField="SDCURRENCY" trim="true" xpath="SDCURRENCY"/>
+    <Mapping cloverField="CURREN_ISO" trim="true" xpath="CURREN_ISO"/>
+    <Mapping cloverField="COND_VALUE" trim="true" xpath="COND_VALUE"/>
+    <Mapping cloverField="CURRENCY" trim="true" xpath="CURRENCY"/>
+    <Mapping cloverField="CURRENCISO" trim="true" xpath="CURRENCISO"/>
+    <Mapping cloverField="CONEXCHRAT" trim="true" xpath="CONEXCHRAT"/>
+    <Mapping cloverField="COND_P_UNT" trim="true" xpath="COND_P_UNT"/>
+    <Mapping cloverField="COND_D_UNT" trim="true" xpath="COND_D_UNT"/>
+    <Mapping cloverField="T_UNIT_ISO" trim="true" xpath="T_UNIT_ISO"/>
+    <Mapping cloverField="NUMCONVERT" trim="true" xpath="NUMCONVERT"/>
+    <Mapping cloverField="DENOMINATO" trim="true" xpath="DENOMINATO"/>
+    <Mapping cloverField="CONDTYPE" trim="true" xpath="CONDTYPE"/>
+    <Mapping cloverField="STAT_CON" trim="true" xpath="STAT_CON"/>
+    <Mapping cloverField="SCALETYPE" trim="true" xpath="SCALETYPE"/>
+    <Mapping cloverField="ACCRUALS" trim="true" xpath="ACCRUALS"/>
+    <Mapping cloverField="CONINVOLST" trim="true" xpath="CONINVOLST"/>
+    <Mapping cloverField="CONDORIGIN" trim="true" xpath="CONDORIGIN"/>
+    <Mapping cloverField="GROUPCOND" trim="true" xpath="GROUPCOND"/>
+    <Mapping cloverField="COND_UPDAT" trim="true" xpath="COND_UPDAT"/>
+    <Mapping cloverField="ACCESS_SEQ" trim="true" xpath="ACCESS_SEQ"/>
+    <Mapping cloverField="COND_NO" trim="true" xpath="COND_NO"/>
+    <Mapping cloverField="CONDCOUNT" trim="true" xpath="CONDCOUNT"/>
+    <Mapping cloverField="ACCOUNTKEY" trim="true" xpath="ACCOUNTKEY"/>
+    <Mapping cloverField="GL_ACCOUNT" trim="true" xpath="GL_ACCOUNT"/>
+    <Mapping cloverField="TAX_CODE" trim="true" xpath="TAX_CODE"/>
+    <Mapping cloverField="ACCOUNT_KE" trim="true" xpath="ACCOUNT_KE"/>
+    <Mapping cloverField="GLACCOUNT" trim="true" xpath="GLACCOUNT"/>
+    <Mapping cloverField="WITHTAXCOD" trim="true" xpath="WITHTAXCOD"/>
+    <Mapping cloverField="VENDOR_NO" trim="true" xpath="VENDOR_NO"/>
+    <Mapping cloverField="CUSTNO_RR" trim="true" xpath="CUSTNO_RR"/>
+    <Mapping cloverField="ROUNDOFFDI" trim="true" xpath="ROUNDOFFDI"/>
+    <Mapping cloverField="CONDVALUE" trim="true" xpath="CONDVALUE"/>
+    <Mapping cloverField="CONDCNTRL" trim="true" xpath="CONDCNTRL"/>
+    <Mapping cloverField="CONDISACTI" trim="true" xpath="CONDISACTI"/>
+    <Mapping cloverField="CONDCLASS" trim="true" xpath="CONDCLASS"/>
+    <Mapping cloverField="CONDCOINHD" trim="true" xpath="CONDCOINHD"/>
+    <Mapping cloverField="INDIBASVAL" trim="true" xpath="INDIBASVAL"/>
+    <Mapping cloverField="INDICONVAL" trim="true" xpath="INDICONVAL"/>
+    <Mapping cloverField="FACTBASVAL" trim="true" xpath="FACTBASVAL"/>
+    <Mapping cloverField="STRUCTCOND" trim="true" xpath="STRUCTCOND"/>
+    <Mapping cloverField="FACTCONBAS" trim="true" xpath="FACTCONBAS"/>
+    <Mapping cloverField="PRICELEVEL" trim="true" xpath="PRICELEVEL"/>
+    <Mapping cloverField="CONDFORMUL" trim="true" xpath="CONDFORMUL"/>
+    <Mapping cloverField="SCALETYP" trim="true" xpath="SCALETYP"/>
+    <Mapping cloverField="INCREMSCAL" trim="true" xpath="INCREMSCAL"/>
+    <Mapping cloverField="INCREASCAL" trim="true" xpath="INCREASCAL"/>
+    <Mapping cloverField="INDEX_NO" trim="true" xpath="INDEX_NO"/>
+    <Mapping cloverField="INDEXNO" trim="true" xpath="INDEXNO"/>
+    <Mapping cloverField="CONDITIDX" trim="true" xpath="CONDITIDX"/>
+    <Mapping cloverField="PRINT_ID" trim="true" xpath="PRINT_ID"/>
+    <Mapping cloverField="FROREFSTEP" trim="true" xpath="FROREFSTEP"/>
+    <Mapping cloverField="FROMREFSTE" trim="true" xpath="FROMREFSTE"/>
+    <Mapping cloverField="CONDSUBTOT" trim="true" xpath="CONDSUBTOT"/>
+    <Mapping cloverField="COND_FORM" trim="true" xpath="COND_FORM"/>
+    <Mapping cloverField="COND_FORM1" trim="true" xpath="COND_FORM1"/>
+    <Mapping cloverField="MAKMANENTR" trim="true" xpath="MAKMANENTR"/>
+    <Mapping cloverField="ROUNDRULE" trim="true" xpath="ROUNDRULE"/>
+    <Mapping cloverField="PMSIGNAMOU" trim="true" xpath="PMSIGNAMOU"/>
+    <Mapping cloverField="CURRCONVER" trim="true" xpath="CURRCONVER"/>
+    <Mapping cloverField="CONDISMAND" trim="true" xpath="CONDISMAND"/>
+    <Mapping cloverField="RATEOFCHA1" trim="true" xpath="RATEOFCHA1"/>
+    <Mapping cloverField="RATEOFCHA2" trim="true" xpath="RATEOFCHA2"/>
+    <Mapping cloverField="RATEOFCHA3" trim="true" xpath="RATEOFCHA3"/>
+    <Mapping cloverField="RATEOFCHA4" trim="true" xpath="RATEOFCHA4"/>
+    <Mapping cloverField="RATEOFCHA5" trim="true" xpath="RATEOFCHA5"/>
+    <Mapping cloverField="RATEOFCHA6" trim="true" xpath="RATEOFCHA6"/>
+    <Mapping cloverField="TERMSOFPAY" trim="true" xpath="TERMSOFPAY"/>
+    <Mapping cloverField="MESSAGENO" trim="true" xpath="MESSAGENO"/>
+    <Mapping cloverField="INDIUPDATE" trim="true" xpath="INDIUPDATE"/>
+    <Mapping cloverField="SELECTION" trim="true" xpath="SELECTION"/>
+    <Mapping cloverField="SCALEBASIN" trim="true" xpath="SCALEBASIN"/>
+    <Mapping cloverField="SCALBASVAL" trim="true" xpath="SCALBASVAL"/>
+    <Mapping cloverField="UNITMEASUR" trim="true" xpath="UNITMEASUR"/>
+    <Mapping cloverField="TUNITISO" trim="true" xpath="TUNITISO"/>
+    <Mapping cloverField="CURRENCKEY" trim="true" xpath="CURRENCKEY"/>
+    <Mapping cloverField="CORRENISO" trim="true" xpath="CORRENISO"/>
+    <Mapping cloverField="CONDCURREN" trim="true" xpath="CONDCURREN"/>
+    <Mapping cloverField="CORR_ISO" trim="true" xpath="CORR_ISO"/>
+    <Mapping cloverField="CONBASVAL" trim="true" xpath="CONBASVAL"/>
+    <Mapping cloverField="CONDIVALUE" trim="true" xpath="CONDIVALUE"/>
+    <Mapping cloverField="CONDINCOMP" trim="true" xpath="CONDINCOMP"/>
+    <Mapping cloverField="CONDCONFIG" trim="true" xpath="CONDCONFIG"/>
+    <Mapping cloverField="CONDCHAMAN" trim="true" xpath="CONDCHAMAN"/>
+    <Mapping cloverField="PRICESOURC" trim="true" xpath="PRICESOURC"/>
+    <Mapping cloverField="VARIANCOND" trim="true" xpath="VARIANCOND"/>
+    <Mapping cloverField="LEVEL_BOM" trim="true" xpath="LEVEL_BOM"/>
+    <Mapping cloverField="PATH_BOM" trim="true" xpath="PATH_BOM"/>
+    <Mapping cloverField="STATOFAGRE" trim="true" xpath="STATOFAGRE"/>
+    <Mapping cloverField="REB_RETROA" trim="true" xpath="REB_RETROA"/>
+    <Mapping cloverField="INDIDELETE" trim="true" xpath="INDIDELETE"/>
+    <Mapping cloverField="AGREE_COND" trim="true" xpath="AGREE_COND"/>
+    <Mapping cloverField="CALCULBASE" trim="true" xpath="CALCULBASE"/>
+    <Mapping cloverField="SH_MAT_TYP" trim="true" xpath="SH_MAT_TYP"/>
+    <Mapping cloverField="ROUNDDIFCO" trim="true" xpath="ROUNDDIFCO"/>
+    <Mapping cloverField="QTYCONVERS" trim="true" xpath="QTYCONVERS"/>
+    <Mapping cloverField="CONCBUFFER" trim="true" xpath="CONCBUFFER"/>
+    <Mapping cloverField="RELACCASSI" trim="true" xpath="RELACCASSI"/>
+    <Mapping cloverField="INDIMATMAI" trim="true" xpath="INDIMATMAI"/>
+    <Mapping cloverField="TAXJURISDI" trim="true" xpath="TAXJURISDI"/>
+    <Mapping cloverField="CONEXCHRAT_V" trim="true" xpath="CONEXCHRAT_V"/>
+    <Mapping cloverField="id" trim="true" xpath="@id"/>
+  </Context>
+  <Context outPort="2" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTLINES_OUT/row[TEXT_ID/text() = '0001' and LANGU_ISO/text() = 'EN']">
+    <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
+    <Mapping cloverField="APPLOBJECT" trim="true" xpath="APPLOBJECT"/>
+    <Mapping cloverField="TEXT_NAME" trim="true" xpath="TEXT_NAME"/>
+    <Mapping cloverField="TEXT_ID" trim="true" xpath="TEXT_ID"/>
+    <Mapping cloverField="LANGU" trim="true" xpath="LANGU"/>
+    <Mapping cloverField="LANGU_ISO" trim="true" xpath="LANGU_ISO"/>
+    <Mapping cloverField="LINE_CNT" trim="true" xpath="LINE_CNT"/>
+    <Mapping cloverField="LINE" trim="true" xpath="LINE"/>
+    <Mapping cloverField="FORMAT_COL" trim="true" xpath="FORMAT_COL"/>
+    <Mapping cloverField="id" trim="true" xpath="@id"/>
+  </Context>
+  <Context outPort="3" sequenceField="__id" xpath="/BAPI_ISAORDER_GETDETAILEDLIST/tables/ORDER_TEXTHEADERS_OUT/row[TEXT_ID/text() = '0001' and LANGU_ISO/text() = 'EN']">
+    <Mapping cloverField="OPERATION" trim="true" xpath="OPERATION"/>
+    <Mapping cloverField="SD_DOC" trim="true" xpath="SD_DOC"/>
+    <Mapping cloverField="ITM_NUMBER" trim="true" xpath="ITM_NUMBER"/>
+    <Mapping cloverField="APPLOBJECT" trim="true" xpath="APPLOBJECT"/>
+    <Mapping cloverField="TEXT_NAME" trim="true" xpath="TEXT_NAME"/>
+    <Mapping cloverField="TEXT_ID" trim="true" xpath="TEXT_ID"/>
+    <Mapping cloverField="LANGU" trim="true" xpath="LANGU"/>
+    <Mapping cloverField="LANGU_ISO" trim="true" xpath="LANGU_ISO"/>
+    <Mapping cloverField="TITLE" trim="true" xpath="TITLE"/>
+    <Mapping cloverField="FORM" trim="true" xpath="FORM"/>
+    <Mapping cloverField="STYLE" trim="true" xpath="STYLE"/>
+    <Mapping cloverField="VERSION" trim="true" xpath="VERSION"/>
+    <Mapping cloverField="CREATEUSER" trim="true" xpath="CREATEUSER"/>
+    <Mapping cloverField="CREATEREL" trim="true" xpath="CREATEREL"/>
+    <Mapping cloverField="CREATEDATE" trim="true" xpath="CREATEDATE"/>
+    <Mapping cloverField="CREATETIME" trim="true" xpath="CREATETIME"/>
+    <Mapping cloverField="CHANGEUSER" trim="true" xpath="CHANGEUSER"/>
+    <Mapping cloverField="CHANGEREL" trim="true" xpath="CHANGEREL"/>
+    <Mapping cloverField="CHANGEDATE" trim="true" xpath="CHANGEDATE"/>
+    <Mapping cloverField="CHANGETIME" trim="true" xpath="CHANGETIME"/>
+    <Mapping cloverField="LINESIZE" trim="true" xpath="LINESIZE"/>
+    <Mapping cloverField="LINEAMOUNT" trim="true" xpath="LINEAMOUNT"/>
+    <Mapping cloverField="HYPHENAT" trim="true" xpath="HYPHENAT"/>
+    <Mapping cloverField="ORGSPRAS" trim="true" xpath="ORGSPRAS"/>
+    <Mapping cloverField="ORGSPRAISO" trim="true" xpath="ORGSPRAISO"/>
+    <Mapping cloverField="TRANSTAT" trim="true" xpath="TRANSTAT"/>
+    <Mapping cloverField="MATCHCOD1" trim="true" xpath="MATCHCOD1"/>
+    <Mapping cloverField="MATCHCOD2" trim="true" xpath="MATCHCOD2"/>
+    <Mapping cloverField="REFOBJECT" trim="true" xpath="REFOBJECT"/>
+    <Mapping cloverField="REFNAME" trim="true" xpath="REFNAME"/>
+    <Mapping cloverField="REFID" trim="true" xpath="REFID"/>
+    <Mapping cloverField="TEXTTYPE" trim="true" xpath="TEXTTYPE"/>
+    <Mapping cloverField="COMPRESSTD" trim="true" xpath="COMPRESSTD"/>
+    <Mapping cloverField="OBJ_CLASS" trim="true" xpath="OBJ_CLASS"/>
+    <Mapping cloverField="id" trim="true" xpath="@id"/>
+  </Context>
 </Context>
 ]]></attr>
 <attr name="_data_format"><![CDATA[XML]]></attr>
 <attr name="__rootGlobalElementName"><![CDATA[BAPI_ISAORDER_GETDETAILEDLIST]]></attr>
 </Node>
-<Edge debugMode="true" fromNode="FOREACH_BAPI_ISAORDER_GETDETAILEDLIST_SALES_X0020ORDER:0" guiBendpoints="" id="Edge1" inPort="Port 0 (in)" metadata="d896b25c-46bc-492a-a062-72627b6dcbd0" outPort="Port 0 (out)" toNode="MAP_WRITER0:0"/>
-<Edge debugMode="true" fromNode="FOREACH_ROW_CONDITIONS:0" guiBendpoints="" id="Edge3" inPort="Port 1 (in)" metadata="4fbf1a0d-04a8-40be-a254-048beb7e434a" outPort="Port 0 (out)" toNode="MAP_WRITER0:1"/>
-<Edge debugMode="true" fromNode="FOREACH_ROW_ITEMS:0" guiBendpoints="" id="Edge5" inPort="Port 2 (in)" metadata="58a0273d-86dd-4d8d-8664-3475e1ab40e1" outPort="Port 0 (out)" toNode="MAP_WRITER0:2"/>
-<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="e4b1d78f-bad3-4086-ba8a-91a59931a7dd" outPort="Port 0 (out)" toNode="FOREACH_BAPI_ISAORDER_GETDETAILEDLIST_SALES_X0020ORDER:0"/>
-<Edge debugMode="true" fromNode="XML_READER0:1" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="e7546e0e-d889-4128-9817-b97bed1d7fbf" outPort="Port 1 (out)" toNode="FOREACH_ROW_CONDITIONS:0"/>
-<Edge debugMode="true" fromNode="XML_READER0:2" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="4202c2f9-4aef-4595-bf58-629db7a09df0" outPort="Port 2 (out)" toNode="FOREACH_ROW_ITEMS:0"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_CONDITIONS:0" guiBendpoints="" id="Edge3" inPort="Port 0 (in)" metadata="4fbf1a0d-04a8-40be-a254-048beb7e434a" outPort="Port 0 (out)" toNode="MAP_WRITER0:0"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_ITEMS:0" guiBendpoints="" id="Edge5" inPort="Port 1 (in)" metadata="58a0273d-86dd-4d8d-8664-3475e1ab40e1" outPort="Port 0 (out)" toNode="MAP_WRITER0:1"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_PARTNERS:0" guiBendpoints="" id="Edge11" inPort="Port 5 (in)" metadata="bd1a1e45-17f8-4beb-9a94-bfd3bc0beb10" outPort="Port 0 (out)" toNode="MAP_WRITER0:5"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_STATUS_HEADERS:0" guiBendpoints="" id="Edge1" inPort="Port 4 (in)" metadata="12351abe-b4db-4cd8-83d4-3d6672fd720a" outPort="Port 0 (out)" toNode="MAP_WRITER0:4"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_TEXT_HEADERS:0" guiBendpoints="" id="Edge9" inPort="Port 3 (in)" metadata="57f55d4c-17d0-4be3-89ec-ea8f7522edc8" outPort="Port 0 (out)" toNode="MAP_WRITER0:3"/>
+<Edge debugMode="true" fromNode="FOREACH_ROW_TEXT_LINES:0" guiBendpoints="" id="Edge7" inPort="Port 2 (in)" metadata="d99c1321-0343-4078-ba21-706688e6fa13" outPort="Port 0 (out)" toNode="MAP_WRITER0:2"/>
+<Edge debugMode="true" fromNode="XML_READER0:0" guiBendpoints="" id="Edge2" inPort="Port 0 (in)" metadata="e7546e0e-d889-4128-9817-b97bed1d7fbf" outPort="Port 0 (out)" toNode="FOREACH_ROW_CONDITIONS:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:1" guiBendpoints="" id="Edge4" inPort="Port 0 (in)" metadata="4202c2f9-4aef-4595-bf58-629db7a09df0" outPort="Port 1 (out)" toNode="FOREACH_ROW_ITEMS:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:2" guiBendpoints="" id="Edge6" inPort="Port 0 (in)" metadata="588593b0-5330-4c1a-9d99-de0b1ee56787" outPort="Port 2 (out)" toNode="FOREACH_ROW_TEXT_LINES:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:3" guiBendpoints="" id="Edge8" inPort="Port 0 (in)" metadata="8660ca74-49b2-48f7-818c-5c022bb5ea97" outPort="Port 3 (out)" toNode="FOREACH_ROW_TEXT_HEADERS:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:4" guiBendpoints="" id="Edge0" inPort="Port 0 (in)" metadata="a9a626a4-c69c-4e8a-82a0-268094ba42cb" outPort="Port 4 (out)" toNode="FOREACH_ROW_STATUS_HEADERS:0"/>
+<Edge debugMode="true" fromNode="XML_READER0:5" guiBendpoints="" id="Edge10" inPort="Port 0 (in)" metadata="d739c4da-f8a6-4c32-828c-95ae71de8a0d" outPort="Port 5 (out)" toNode="FOREACH_ROW_PARTNERS:0"/>
 </Phase>
 </Graph>

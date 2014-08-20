@@ -3,6 +3,7 @@
  * Copyright (c) MuleSoft, Inc.
  * All rights reserved.  http://www.mulesoft.com
  */
+
 package org.mule.templates.test.utils;
 
 import org.mule.tck.probe.Probe;
