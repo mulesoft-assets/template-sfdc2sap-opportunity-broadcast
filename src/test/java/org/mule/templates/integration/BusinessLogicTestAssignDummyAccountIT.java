@@ -38,9 +38,6 @@ import com.sforce.soap.partner.SaveResult;
  * not in the destination sand box.
  * 
  * The test validates that no account will get sync as result of the integration but the opportunities will belong to a particular predifined account.
- * 
- * 
- * @author cesar,garcia
  */
 
 public class BusinessLogicTestAssignDummyAccountIT extends AbstractTemplateTestCase {
@@ -125,8 +122,8 @@ public class BusinessLogicTestAssignDummyAccountIT extends AbstractTemplateTestC
 		Assert.assertEquals("The opportunity should not have been sync", null, invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(1)));
 
 		Map<String, Object> opportunityPayload = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(2));
-		Assert.assertEquals("The opportunity should have been sync", createdOpportunities.get(2).get("Name"), opportunityPayload.get("Name"));
-		Assert.assertEquals("The opportunity should belong to a different account ", "0000001175", opportunityPayload.get("AccountId"));
+		Assert.assertEquals("The opportunity should have been sync", createdOpportunities.get(2).get("Name"), opportunityPayload == null ? null : opportunityPayload.get("Name"));
+		Assert.assertEquals("The opportunity should belong to a different account ", "0000001175", opportunityPayload == null ? null : opportunityPayload.get("AccountId"));
 
 		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, createdAccounts.get(0));
 		Assert.assertNull("The Account shouldn't have been sync.", accountPayload);
@@ -181,6 +178,7 @@ public class BusinessLogicTestAssignDummyAccountIT extends AbstractTemplateTestC
 		opportunity2 = createOpportunity("Salesforce", 2);
 		opportunity2.put("Amount", 10000);
 		opportunity2.put("AccountId", createdAccounts.get(0).get("Id"));
+		opportunity2.put("StageName", "Closed Won");
 		createdOpportunities.add(opportunity2);
 
 		MuleEvent event = createOpportunityInSalesforceFlow.process(getTestEvent(createdOpportunities, MessageExchangePattern.REQUEST_RESPONSE));

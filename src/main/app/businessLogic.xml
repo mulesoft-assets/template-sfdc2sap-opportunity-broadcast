@@ -27,7 +27,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 	<batch:job name="syncOpportunitiesBatch">
 		<batch:threading-profile poolExhaustedAction="WAIT" />
 		<batch:process-records>
-			<batch:step name="foreachOpportunityInSalesforceGetsalesorderInSapStep">
+			<batch:step name="foreachOpportunityInSalesforceGetSalesOrderInSapStep">
                 <enricher source="#[payload is NullPayload ? null : payload['Id']]" target="#[payload['SALESDOCUMENT']]" doc:name="Message Enricher">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_GETLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_SALESORDER_GETLIST">
@@ -70,7 +70,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                     </otherwise>
                 </choice>
 			</batch:step>
-			 <batch:step name="findOrCreateSalesOrderInSapSetp" accept-expression="'syncAccount' == '${account.sync.policy}'">
+			 <batch:step name="findOrCreateCustomerInSapSetp" accept-expression="'syncAccount' == '${account.sync.policy}'">
                 <enricher source="#[payload[0]['CustomerNumber'] == null ? NullPayload.getInstance() : payload[0]]" target="#[payload['customerInSap']]" doc:name="store result in customerInSap">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_FIND" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Get Customer by Name">

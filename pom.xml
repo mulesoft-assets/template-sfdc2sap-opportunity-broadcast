@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 
@@ -73,7 +74,7 @@
 						<configuration>
 							<tasks>
 								<zip destfile="${project.build.directory}/${project.build.finalName}.zip" update="true">
-									<zipfileset dir="${project.build.directory}/temp-native-lib" prefix="lib"/>
+									<zipfileset dir="${project.build.directory}/temp-native-lib" prefix="lib" />
 								</zip>
 							</tasks>
 						</configuration>
@@ -126,13 +127,14 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
-	<dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-module-spring-config</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
+
+	</dependencies>
 
 	<repositories>
 		<repository>
@@ -153,7 +155,7 @@
 			<url>http://repository-master.mulesoft.org/nexus/content/repositories/mule-ee-dependencies/</url>
 		</repository>
 	</repositories>
-	
+
 	<scm>
 		<connection>scm:git:https://github.com/mulesoft/template-sfdc2sap-opportunity-broadcast.git</connection>
 		<developerConnection>scm:git:https://github.com/mulesoft/template-sfdc2sap-opportunity-broadcast.git</developerConnection>
