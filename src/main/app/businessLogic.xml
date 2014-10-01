@@ -36,6 +36,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 		<field name="PURCHASE_ORDER_NUMBER">#[payload['Id']]</field>
 	</import>
 </jco>]]></sap:definition>
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_SALESORDER_GETLIST_to_Sales_Order" doc:name="BAPI_SALESORDER_GETLIST to Sales Order"/>
                     </processor-chain>
@@ -60,6 +61,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 		</table>
 	</tables>
 </jco>]]></sap:definition>
+
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
                             </processor-chain>
@@ -90,6 +92,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 	</tables>
 </jco>
 ]]></sap:definition>
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_CUSTOMER_FIND_to_Customer" doc:name="BAPI_CUSTOMER_FIND to Customer"/>
                     </processor-chain>
@@ -122,6 +125,7 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
 		<field name="CUSTOMERNO">#[payload['customerInSap']['CustomerNumber']]</field>
 	</import>
 </jco>]]></sap:definition>
+
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas" doc:name="BAPI_CUSTOMER_GETSALESAREAS to Sales Areas"/>
                             </processor-chain>
@@ -138,6 +142,7 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
 			<batch:step name="foreachOpportunityInSalesforceInsertSalesOrderInSapStep" accept-expression="payload['salesOrderInSap'] is NullPayload">
                 <logger message="Opportunities to create: #[payload]" level="INFO" doc:name="log Opportunities to create"/>
                 <expression-component doc:name="assign numbers to opportunity line items"><![CDATA[payload['CloseDate'] = payload['CloseDate'].replace("-", "");
+payload.put('CurrencyIsoCode','EUR');
 if (payload['OpportunityLineItems'] != null) {
 	num = 0;
 	for (record : payload['OpportunityLineItems']['records']) {
@@ -154,6 +159,7 @@ payload.put('salesOrderInSap', NullPayload.getInstance());]]></expression-compon
 			</batch:step>
             <batch:step name="foreachOpportunityInSalesforceUpdatesalesorderInSapStep" accept-expression="!(payload['salesOrderInSap'] is NullPayload)">
                 <expression-component doc:name="assign numbers to opportunity line items"><![CDATA[payload['CloseDate'] = payload['CloseDate'].replace("-", "");
+payload.put('CurrencyIsoCode','EUR');
 int max = 0;
 for (item : payload['salesOrderInSap']['Items']) {
 	max = Math.max(max, Integer.parseInt(item['ITM_NUMBER']));
