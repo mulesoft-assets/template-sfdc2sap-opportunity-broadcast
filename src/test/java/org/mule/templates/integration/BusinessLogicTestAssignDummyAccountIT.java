@@ -123,8 +123,6 @@ public class BusinessLogicTestAssignDummyAccountIT extends AbstractTemplateTestC
 
 		Map<String, Object> opportunityPayload = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(2));
 		Assert.assertEquals("The opportunity should have been sync", createdOpportunities.get(2).get("Name"), opportunityPayload == null ? null : opportunityPayload.get("Name"));
-		Assert.assertEquals("The opportunity should belong to a different account ", "0000001175", opportunityPayload == null ? null : opportunityPayload.get("AccountId"));
-
 		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, createdAccounts.get(0));
 		Assert.assertNull("The Account shouldn't have been sync.", accountPayload);
 	}
