@@ -134,11 +134,10 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 		for (Map<String, Object> c : createdAccounts) {
 			Map<String, Object> account = invokeRetrieveFlow(retrieveAccountFromSapFlow, c);
 			if (account != null) {
-				System.out.println("AAAAACCCCC: " + account);
 				idList.add(account.get("Id"));
 			}
 		}
-		flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
+		//flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
 	}
 
 	protected String buildUniqueName(String templateName, String name) {
@@ -164,7 +163,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("Name", buildUniqueName(TEMPLATE_NAME, "OppName" + sequence + "_"));
 		map.put("StageName", "NoStage");
-		map.put("CloseDate", date("2050-10-10"));
+		map.put("CloseDate", date("2015-10-10"));
 		map.put("Probability", "1");
 		return map;
 	}
