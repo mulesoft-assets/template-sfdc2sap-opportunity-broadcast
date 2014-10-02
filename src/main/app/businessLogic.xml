@@ -137,7 +137,12 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
                 </choice>
             </batch:step>
             <batch:step name="setDummyAccountIdStep" accept-expression="'assignDummyAccount' == '${account.sync.policy}'">
-                <expression-component doc:name="set customer number"><![CDATA[payload.put('CustomerNumber', '${account.sapCustomerNumber}');]]></expression-component>
+                <expression-component doc:name="set customer number"><![CDATA[payload.put('CustomerNumber', '${account.sapCustomerNumber}');
+payload['SalesOrganization'] = '${account.sapSalesOrganization}';
+payload['DistributionChannel'] = '${account.sapDistributionChannel}';
+payload['Division'] = '${account.sapDivision}';
+payload['RefCustomer'] = '${account.sapRefCustomer}';
+payload['CustomerName'] = '${account.sapRefCustomer}';]]></expression-component>
             </batch:step>
 			<batch:step name="foreachOpportunityInSalesforceInsertSalesOrderInSapStep" accept-expression="payload['salesOrderInSap'] is NullPayload">
                 <logger message="Opportunities to create: #[payload]" level="INFO" doc:name="log Opportunities to create"/>
