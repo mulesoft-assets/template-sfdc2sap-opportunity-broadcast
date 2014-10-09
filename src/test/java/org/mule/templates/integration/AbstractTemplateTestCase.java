@@ -137,7 +137,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 				idList.add(account.get("Id"));
 			}
 		}
-		//flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
+		flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
 	}
 
 	protected String buildUniqueName(String templateName, String name) {
