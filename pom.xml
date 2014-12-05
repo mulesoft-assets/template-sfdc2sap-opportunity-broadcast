@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.8</version>
 	</parent>
 
 	<artifactId>template-sfdc2sap-opportunity-broadcast</artifactId>
@@ -17,9 +17,8 @@
 
 	<properties>
 		<sfdc.version>5.4.7</sfdc.version>
-		<sap.transport.version>2.2.2</sap.transport.version>
 		<sap.jco.version>3.0.9</sap.jco.version>
-		<sap.idoc.version>3.0.6</sap.idoc.version>
+		<sap.idoc.version>3.0.11</sap.idoc.version>
 		<sap.build.type>linux64</sap.build.type>
 	</properties>
 
@@ -97,7 +96,7 @@
 		<dependency>
 			<groupId>com.mulesoft.muleesb.transports</groupId>
 			<artifactId>mule-transport-sap</artifactId>
-			<version>${sap.transport.version}</version>
+			<version>${sap.version}</version>
 		</dependency>
 
 		<!-- SAP Dependencies -->

@@ -5,7 +5,7 @@
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
-	version="EE-3.5.1"
+	version="EE-3.5.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
@@ -31,11 +31,11 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                 <enricher source="#[payload is NullPayload ? null : payload['Id']]" target="#[payload['SALESDOCUMENT']]" doc:name="Message Enricher">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_GETLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_SALESORDER_GETLIST">
-                            <sap:definition><![CDATA[<jco>
+                            <sap:definition><![CDATA[<BAPI_SALESORDER_GETLIST>
 	<import>
-		<field name="PURCHASE_ORDER_NUMBER">#[payload['Id']]</field>
+		<PURCHASE_ORDER_NUMBER>#[payload['Id']]</PURCHASE_ORDER_NUMBER>
 	</import>
-</jco>]]></sap:definition>
+</BAPI_SALESORDER_GETLIST>]]></sap:definition>
 
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_SALESORDER_GETLIST_to_Sales_Order" doc:name="BAPI_SALESORDER_GETLIST to Sales Order"/>
@@ -46,21 +46,24 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                         <enricher source="#[payload]" target="#[payload['salesOrderInSap']]" doc:name="store result in record var 'salesorderInSap'">
                             <processor-chain doc:name="Processor Chain">
                                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_ISAORDER_GETDETAILEDLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="SAP BAPI_ISAORDER_GETDETAILEDLIST" evaluateFunctionResponse="true">
-                                    <sap:definition><![CDATA[<jco>
-	<import>
-		<structure name="I_BAPI_VIEW">
-			<field name="ITEM">X</field>
-			<field name="SDCOND">X</field>
-		</structure>
-	</import>
-	<tables>
-		<table name="SALES_DOCUMENTS">
-			<row>
-				<field name="VBELN">#[payload['SALESDOCUMENT']]</field>
-			</row>
-		</table>
-	</tables>
-</jco>]]></sap:definition>
+                                    <sap:definition><![CDATA[<BAPI_ISAORDER_GETDETAILEDLIST>
+    <import>
+        <I_BAPI_VIEW>
+            <ITEM>X</ITEM>
+            <SDCOND>X</SDCOND>
+        </I_BAPI_VIEW>
+    </import>
+    <tables>
+        <SALES_DOCUMENTS type="table">
+            <table name="SALES_DOCUMENTS">
+                <row>
+                    <VBELN>#[payload['SALESDOCUMENT']]</VBELN>
+                </row>
+            </table>
+        </SALES_DOCUMENTS>
+    </tables>
+</BAPI_ISAORDER_GETDETAILEDLIST>
+]]></sap:definition>
 
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
@@ -76,21 +79,27 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                 <enricher source="#[payload[0]['CustomerNumber'] == null ? NullPayload.getInstance() : payload[0]]" target="#[payload['customerInSap']]" doc:name="store result in customerInSap">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_FIND" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Get Customer by Name">
-                            <sap:definition><![CDATA[<jco>
-	<import>
-		<field name="MAX_CNT">0</field>
-		<field name="PL_HOLD">X</field>
-	</import>
-  	<tables>
-		<table name="SELOPT_TAB">
-			<row id="0">
-				<field name="TABNAME">KNA1</field>
-				<field name="FIELDNAME">NAME1</field>
-				<field name="FIELDVALUE">#[org.apache.commons.lang3.StringEscapeUtils.escapeXml(payload['Account']['Name'])]</field>
-			</row>
-		</table>
-	</tables>
-</jco>
+                            <sap:definition><![CDATA[<BAPI_CUSTOMER_FIND type="function">
+    <import>
+        <MAX_CNT type="field" sapType="INT">0</MAX_CNT>
+        <PL_HOLD type="field" sapType="CHAR" sapLength="1">X</PL_HOLD>
+    </import>
+    <tables>
+        <SELOPT_TAB type="table">
+            <table name="SELOPT_TAB">
+                <row id="0">
+                    <TABNAME type="field"
+                        sapType="CHAR" sapLength="4">KNA1</TABNAME>
+                    <FIELDNAME type="field"
+                        sapType="CHAR" sapLength="5">NAME1</FIELDNAME>
+                    <FIELDVALUE type="field" 
+                        sapType="CHAR" sapLength="20">#[org.apache.commons.lang3.StringEscapeUtils.escapeXml(payload['Account']['Name'])]</FIELDVALUE>
+                </row>
+            </table>
+        </SELOPT_TAB>
+    </tables>
+</BAPI_CUSTOMER_FIND>
+
 ]]></sap:definition>
 
                         </sap:outbound-endpoint>
@@ -120,11 +129,11 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
                         <enricher doc:name="store Sales Area">
                             <processor-chain doc:name="Processor Chain">
                                 <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_GETSALESAREAS" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_CUSTOMER_GETSALESAREAS">
-                                    <sap:definition><![CDATA[<jco>
+                                    <sap:definition><![CDATA[<BAPI_CUSTOMER_GETSALESAREAS>
 	<import>
-		<field name="CUSTOMERNO">#[payload['customerInSap']['CustomerNumber']]</field>
+		<CUSTOMERNO>#[payload['customerInSap']['CustomerNumber']]</CUSTOMERNO>
 	</import>
-</jco>]]></sap:definition>
+</BAPI_CUSTOMER_GETSALESAREAS>]]></sap:definition>
 
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas" doc:name="BAPI_CUSTOMER_GETSALESAREAS to Sales Areas"/>
