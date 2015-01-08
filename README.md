@@ -1,5 +1,5 @@
 
-# Anypoint Template: SFDC2SAP-opportunity-broadcast
+# Anypoint Template: Salesforce to SAP Opportunity Broadcast
 
 + [License Agreement](#licenseagreement)
 + [Use Case](#usecase)
@@ -114,7 +114,7 @@ column='486'
 
 
 # Run it! <a name="runit"/>
-Simple steps to get SFDC2SAP-opportunity-broadcast running.
+Simple steps to get Salesforce to SAP Opportunity Broadcast running.
 
 
 ## Running on premise <a name="runonopremise"/>
@@ -200,7 +200,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.default.accountGroup `ZAG2`
 
 # API Calls <a name="apicalls"/>
- 
+Ê
 
 
 # Customize It!<a name="customizeit"/>
