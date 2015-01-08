@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.0.8</version>
+		<version>1.0.13</version>
 	</parent>
 
 	<artifactId>template-sfdc2sap-opportunity-broadcast</artifactId>
@@ -16,7 +16,6 @@
 	<name>template-sfdc2sap-opportunity-broadcast Anypoint Template Project</name>
 
 	<properties>
-		<sfdc.version>5.4.7</sfdc.version>
 		<sap.jco.version>3.0.10</sap.jco.version>
 		<sap.idoc.version>3.0.10</sap.idoc.version>
 		<sap.build.type>linux64</sap.build.type>

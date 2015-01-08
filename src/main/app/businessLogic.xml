@@ -37,6 +37,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 	</import>
 </BAPI_SALESORDER_GETLIST>]]></sap:definition>
 
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_SALESORDER_GETLIST_to_Sales_Order" doc:name="BAPI_SALESORDER_GETLIST to Sales Order"/>
                     </processor-chain>
@@ -64,6 +65,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     </tables>
 </BAPI_ISAORDER_GETDETAILEDLIST>
 ]]></sap:definition>
+
 
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
@@ -102,6 +104,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 
 ]]></sap:definition>
 
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_CUSTOMER_FIND_to_Customer" doc:name="BAPI_CUSTOMER_FIND to Customer"/>
                     </processor-chain>
@@ -134,6 +137,7 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
 		<CUSTOMERNO>#[payload['customerInSap']['CustomerNumber']]</CUSTOMERNO>
 	</import>
 </BAPI_CUSTOMER_GETSALESAREAS>]]></sap:definition>
+
 
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas" doc:name="BAPI_CUSTOMER_GETSALESAREAS to Sales Areas"/>

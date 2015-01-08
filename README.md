@@ -27,23 +27,23 @@ Please review the terms of the license before downloading and using this templat
 
 # Use Case <a name="usecase"/>
 This Anypoint Template should serve as a foundation for setting an online sync of won opportunities from Salesforce to sales orders in SAP.
-			Everytime there is a new won opportunity or a change in already existing one in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
+Everytime there is a new won opportunity or a change in already existing one in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
 			
-			Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
+Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 			
-			As implemented, this Anypoint Template leverage the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
-			The batch job is divided in Input, Process and On Complete stages.
-			The integration is triggered by poll to Salesforce won opportunities. New or modified won opportunities are passed to the batch as input.
-			In the batch the sales order is fetched from SAP by its purchase order number equal to opportunity ID.
-			If it exists, more sales order details are fetched from SAP.
-			In next batch step customer is looked up by opportunity account name if sync policy is set to synchronize accounts.
-			If the customer is found its sales areas are fetched from SAP and first one is selected to be used in sales order creation.
-			If it is not found, then new customer is created with preconfigured sales area.
-			Template doesn't support changing customer of the existing sales order.
-			Next batch step is executed only if preconfigured (dummy) account is configured to be used. In that step also preconfigured sales area is set up.
-			Account synchronization policy must be either `syncAccount` or `assignDummyAccount`. Sales order creation will fail if it has no account (ship to) assigned.
-			Next two steps creates or updates sales order in SAP. 
-			Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
+As implemented, this Anypoint Template leverage the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
+The batch job is divided in Input, Process and On Complete stages.
+The integration is triggered by poll to Salesforce opportunities. New or modified opportunities, which fulfill IsWon criteria are passed to the batch as input.
+In the batch the sales order is fetched from SAP by its purchase order number equal to opportunity ID.
+If it exists, more sales order details are fetched from SAP.
+In next batch step customer is looked up by opportunity account name if sync policy is set to synchronize accounts.
+If the customer is found its sales areas are fetched from SAP and first one is selected to be used in sales order creation.
+If it is not found, then new customer is created with preconfigured sales area.
+Template doesn't support changing customer of the existing sales order.
+Next batch step is executed only if preconfigured (dummy) account is configured to be used. In that step also preconfigured sales area is set up.
+Account synchronization policy must be either `syncAccount` or `assignDummyAccount`. Sales order creation will fail if it has no account (ship to) assigned.
+Next two steps create or update sales order in SAP. 
+Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
 
 # Considerations <a name="considerations"/>
 
@@ -112,12 +112,13 @@ column='486'
 
 
 
+
 # Run it! <a name="runit"/>
 Simple steps to get SFDC2SAP-opportunity-broadcast running.
 
 
 ## Running on premise <a name="runonopremise"/>
-In this section we detail the way you have to run you Anypoint Temple on you computer.
+In this section we detail the way you should run your Anypoint Template on your computer.
 
 
 ### Where to Download Mule Studio and Mule ESB
@@ -152,7 +153,7 @@ Please check this Documentation Page:
 + [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
 
 ### Running on Mule ESB stand alone <a name="runonmuleesbstandalone"/>
-Complete all properties in one of the property files, for example in [mule.prod.properties] (../blob/master/src/main/resources/mule.prod.properties) and run your app with the corresponding environment variable to use it. To follow the example, this will be `mule.env=prod`. 
+Complete all properties in one of the property files, for example in [mule.prod.properties] (../master/src/main/resources/mule.prod.properties) and run your app with the corresponding environment variable to use it. To follow the example, this will be `mule.env=prod`. 
 
 
 ## Running on CloudHub <a name="runoncloudhub"/>
@@ -199,7 +200,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.default.accountGroup `ZAG2`
 
 # API Calls <a name="apicalls"/>
-Â 
+ 
 
 
 # Customize It!<a name="customizeit"/>
@@ -222,22 +223,18 @@ In the visual editor they can be found on the *Global Element* tab.
 
 
 ## businessLogic.xml<a name="businesslogicxml"/>
-Functional aspect of the Anypoint Template is implemented on this XML, directed by a batch job that will be responsible for creations/updates. The several message processors constitute four high level actions that fully implement the logic of this Anypoint Template:
-
-1. Job execution is invoked from triggerFlow (endpoints.xml) everytime there is a new query executed asking for created/updated Contacts.
-2. During the Process stage, each SFDC User will be filtered depending on, if it has an existing matching user in the SFDC Org B.
-3. The last step of the Process stage will group the users and create/update them in SFDC Org B.
-Finally during the On Complete stage the Anypoint Template will logoutput statistics data into the console.
+A functional aspect of this Anypoint Template implemented in this XML is to create or update objects in the destination system for a represented use case. You can customize and extend the logic of this Anypoint Template in this XML to more specifically meet your needs.
 
 
 
 ## endpoints.xml<a name="endpointsxml"/>
-This is file is conformed by a Flow containing the Poll that will periodically query Sales Force for updated/created Contacts that meet the defined criteria in the query. And then executing the batch job process with the query results.
+This is file is conformed by a Flow containing the endpoints for triggering the template and retrieving the objects that meet the defined criteria in the query. And then executing the batch job process with the query results.
 
 
 
 ## errorHandling.xml<a name="errorhandlingxml"/>
-Contains a [Catch Exception Strategy](http://www.mulesoft.org/documentation/display/current/Catch+Exception+Strategy) that is only Logging the exception thrown (If so). As you imagine, this is the right place to handle how your integration will react depending on the different exceptions.
+This is the right place to handle how your integration will react depending on the different exceptions. 
+This file holds a [Choice Exception Strategy](http://www.mulesoft.org/documentation/display/current/Choice+Exception+Strategy) that is referenced by the main flow in the business logic.
 
 
 
