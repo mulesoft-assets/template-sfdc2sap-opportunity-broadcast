@@ -2033,8 +2033,6 @@ output.__id = input.__id;
 //END -> DO NOT REMOVE
 output.DOC_TYPE = "TA";;
 
-
-
 output.PURCH_NO_C = input.Id;
 output.CURR_ISO = input.CurrencyIsoCode;
 output.REQ_DATE_H = input.CloseDate;
@@ -2049,7 +2047,7 @@ output.__id = input.__id;
 output.__parent_id = input.__id;
 //END -> DO NOT REMOVE
 output.PARTN_ROLE = "AG";
-output.PARTN_NUMB = input.CustomerNumber;;]]></attr>
+output.PARTN_NUMB = input.CustomerNumber;]]></attr>
 </Node>
 <Node enabled="enabled" guiName="Foreach 'Opportunity' -&gt; 'ORDER_TEXT/row[0]'" guiX="460" guiY="520" id="FOREACH_OPPORTUNITY_ROW4" transformClass="com.mulesoft.datamapper.transform.MelRecordTransform" type="REFORMAT">
 <attr name="melScript"><![CDATA[//MEL

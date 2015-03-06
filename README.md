@@ -26,23 +26,24 @@ Note that using this template is subject to the conditions of this [License Agre
 Please review the terms of the license before downloading and using this template. In short, you are allowed to use the template for free with Mule ESB Enterprise Edition, CloudHub, or as a trial in Anypoint Studio.
 
 # Use Case <a name="usecase"/>
-This Anypoint Template should serve as a foundation for setting an online sync of won opportunities from Salesforce to sales orders in SAP.
-Everytime there is a new won opportunity or a change in already existing one in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
+This Anypoint Template should serve as a foundation for setting an online sync of won opportunities from Salesforce to Sales orders in SAP.
+Everytime there is a new won opportunity or a change in already existing one with assigned Account in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
 			
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 			
 As implemented, this Anypoint Template leverage the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
 The batch job is divided in Input, Process and On Complete stages.
-The integration is triggered by poll to Salesforce opportunities. New or modified opportunities, which fulfill IsWon criteria are passed to the batch as input.
+The integration is triggered by poll to Salesforce opportunities. New or modified opportunities, which fulfill IsWon and HasAccount criteria are passed to the batch as input.
 In the batch the sales order is fetched from SAP by its purchase order number equal to opportunity ID.
 If it exists, more sales order details are fetched from SAP.
-In next batch step customer is looked up by opportunity account name if sync policy is set to synchronize accounts.
+In next batch step customer is looked up by opportunity account name.
 If the customer is found its sales areas are fetched from SAP and first one is selected to be used in sales order creation.
-If it is not found, then new customer is created with preconfigured sales area.
+If the customer is found, but has not any sales area data set, the migration of opportunity is ignored.
+If it is not found, then the dummy customer is used with preconfigured sales area and customer number.
 Template doesn't support changing customer of the existing sales order.
-Next batch step is executed only if preconfigured (dummy) account is configured to be used. In that step also preconfigured sales area is set up.
-Account synchronization policy must be either `syncAccount` or `assignDummyAccount`. Sales order creation will fail if it has no account (ship to) assigned.
-Next two steps create or update sales order in SAP. 
+Then we check the validity of sales area data.
+Next step ignore the opportunity migration process, in case that sales area data are not valid.
+Another two steps create or update sales order in SAP. 
 Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
 
 # Considerations <a name="considerations"/>
@@ -175,12 +176,10 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + page.size `100`
 + timeOffsetBetweenSapAndSalesforce `-4000`
 
-+ account.sync.policy `syncAccount`
-+ account.sapCustomerNumber `0000001175`
-+ account.sapSalesOrganization `302000`
++ account.sapCustomerNumber `0000400492`
++ account.sapSalesOrganization `3020`
 + account.sapDistributionChannel `30`
 + account.sapDivision `00`
-+ account.sapRefCustomer `0000000255`
 		
 **SalesForce Connector configuration**
 
@@ -200,7 +199,7 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.default.accountGroup `ZAG2`
 
 # API Calls <a name="apicalls"/>
-Ê
+ 
 
 
 # Customize It!<a name="customizeit"/>

@@ -39,7 +39,7 @@ import com.sforce.soap.partner.SaveResult;
  * 
  * The test validates that an account will get sync as result of the integration.
  */
-public class BusinessLogicTestCreateAccountIT extends AbstractTemplateTestCase {
+public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCase {
 
 	private static final String POLL_FLOW_NAME = "triggerFlow";
 
@@ -65,7 +65,7 @@ public class BusinessLogicTestCreateAccountIT extends AbstractTemplateTestCase {
 		// LastModifiedDate greater than ten seconds before current time
 		System.setProperty("watermark.default.expression", "#[groovy: new Date(System.currentTimeMillis() - 10000).format(\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\", TimeZone.getTimeZone('UTC'))]");
 
-		System.setProperty("account.sync.policy", "syncAccount");
+		//System.setProperty("account.sync.policy", "syncAccount");
 		System.setProperty("account.id.in.b", "");
 
 	}
@@ -118,7 +118,10 @@ public class BusinessLogicTestCreateAccountIT extends AbstractTemplateTestCase {
 
 		Assert.assertEquals("The opportunity should not have been sync", null, invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(1)));
 
-		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, createdAccounts.get(0));
+		Map<String,Object> dummyAccount = new HashMap<String,Object>();
+		dummyAccount.put("Name", "sfdc2sap_opp_bc_i0qpkqq3 Company");
+		
+		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, dummyAccount);
 		Map<String, Object> opportunityPayload = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(2));
 		Assert.assertEquals("The opportunity should have been sync", createdOpportunities.get(2).get("Name"), opportunityPayload == null ? null : opportunityPayload.get("Name"));
 		Assert.assertEquals("The opportunity should belong to a different account ", accountPayload.get("CustomerNumber"), opportunityPayload == null ? null : opportunityPayload.get("AccountId"));
@@ -171,6 +174,7 @@ public class BusinessLogicTestCreateAccountIT extends AbstractTemplateTestCase {
 		opportunity.put("Amount", 30000);
 		opportunity.put("AccountId", createdAccounts.get(0).get("Id"));
 		opportunity.put("StageName", "Closed Won");
+		opportunity.put("Probability", "100");
 		createdOpportunities.add(opportunity);
 
 		MuleEvent event = flow.process(getTestEvent(createdOpportunities, MessageExchangePattern.REQUEST_RESPONSE));

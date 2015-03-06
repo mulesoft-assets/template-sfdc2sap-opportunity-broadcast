@@ -21,10 +21,10 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     <data-mapper:config name="Opportunity_to_BAPI_SALESORDER_CHANGE" transformationGraphPath="opportunity_to_bapi_salesorder_change.grf" doc:name="Opportunity_to_BAPI_SALESORDER_CHANGE"/>
     <data-mapper:config name="BAPI_CUSTOMER_FIND_to_Customer" transformationGraphPath="bapi_customer_find_to_customer.grf" doc:name="BAPI_CUSTOMER_FIND_to_Customer"/>
     <data-mapper:config name="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" transformationGraphPath="bapi_isaorder_getdetailedlist_to_sales_order.grf" doc:name="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order"/>
-    <data-mapper:config name="Account_to_BAPI_CUSTOMER_CREATEFROMDATA1" transformationGraphPath="account_to_bapi_customer_createfromdata1.grf" doc:name="Account_to_BAPI_CUSTOMER_CREATEFROMDATA1"/>
-    <data-mapper:config name="BAPI_CUSTOMER_CREATEFROMDATA1_to_Customer_Number_Wrapper" transformationGraphPath="bapi_customer_createfromdata1_to_customer_number_wrapper.grf" doc:name="BAPI_CUSTOMER_CREATEFROMDATA1_to_Customer_Number_Wrapper"/>
+<!--     <data-mapper:config name="Account_to_BAPI_CUSTOMER_CREATEFROMDATA1" transformationGraphPath="account_to_bapi_customer_createfromdata1.grf" doc:name="Account_to_BAPI_CUSTOMER_CREATEFROMDATA1"/> -->
+<!--     <data-mapper:config name="BAPI_CUSTOMER_CREATEFROMDATA1_to_Customer_Number_Wrapper" transformationGraphPath="bapi_customer_createfromdata1_to_customer_number_wrapper.grf" doc:name="BAPI_CUSTOMER_CREATEFROMDATA1_to_Customer_Number_Wrapper"/> -->
     <data-mapper:config name="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas" transformationGraphPath="bapi_customer_getsalesareas_to_sales_areas.grf" doc:name="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas"/>
-	<batch:job name="syncOpportunitiesBatch">
+    <batch:job name="syncOpportunitiesBatch">
 		<batch:threading-profile poolExhaustedAction="WAIT" />
 		<batch:process-records>
 			<batch:step name="foreachOpportunityInSalesforceGetSalesOrderInSapStep">
@@ -36,6 +36,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 		<PURCHASE_ORDER_NUMBER>#[payload['Id']]</PURCHASE_ORDER_NUMBER>
 	</import>
 </BAPI_SALESORDER_GETLIST>]]></sap:definition>
+
 
 
                         </sap:outbound-endpoint>
@@ -67,6 +68,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 ]]></sap:definition>
 
 
+
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
                             </processor-chain>
@@ -77,7 +79,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
                     </otherwise>
                 </choice>
 			</batch:step>
-			 <batch:step name="findOrCreateCustomerInSapSetp" accept-expression="'syncAccount' == '${account.sync.policy}'">
+			 <batch:step name="findOrCreateCustomerInSapSetp" >
                 <enricher source="#[payload[0]['CustomerNumber'] == null ? NullPayload.getInstance() : payload[0]]" target="#[payload['customerInSap']]" doc:name="store result in customerInSap">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_FIND" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Get Customer by Name">
@@ -105,25 +107,18 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 ]]></sap:definition>
 
 
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_CUSTOMER_FIND_to_Customer" doc:name="BAPI_CUSTOMER_FIND to Customer"/>
                     </processor-chain>
                 </enricher>
                 <choice doc:name="Choice">
                     <when expression="#[payload['customerInSap'] is NullPayload]">
-                        <expression-component doc:name="set sales area"><![CDATA[payload['SalesOrganization'] = '${account.sapSalesOrganization}';
+                        <expression-component doc:name="Set the dummy customer data"><![CDATA[payload['CustomerNumber'] = '${account.sapCustomerNumber}';
+payload['SalesOrganization'] = '${account.sapSalesOrganization}';
 payload['DistributionChannel'] = '${account.sapDistributionChannel}';
-payload['Division'] = '${account.sapDivision}';
-payload['RefCustomer'] = '${account.sapRefCustomer}';
-payload['CustomerName'] = '${account.sapRefCustomer}';
-]]></expression-component>
-                        <enricher doc:name="store result in CustomerNumber" target="#[payload['CustomerNumber']]" source="#[payload['CustomerNumber']]">
-	                        <processor-chain doc:name="Processor Chain">
-                                <data-mapper:transform config-ref="Account_to_BAPI_CUSTOMER_CREATEFROMDATA1" doc:name="Account to BAPI_CUSTOMER_CREATEFROMDATA1"/>
-                                <sap:outbound-endpoint exchange-pattern="request-response" type="function" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_CUSTOMER_CREATEFROMDATA1" bapiTransaction="true" connector-ref="SAP" evaluateFunctionResponse="true" functionName="BAPI_CUSTOMER_CREATEFROMDATA1"/>
-                                <data-mapper:transform config-ref="BAPI_CUSTOMER_CREATEFROMDATA1_to_Customer_Number_Wrapper" doc:name="BAPI_CUSTOMER_CREATEFROMDATA1 to Customer Number Wrapper"/>
-	                        </processor-chain>
-                        </enricher>
+payload['Division'] = '${account.sapDivision}';]]></expression-component>
+
                     </when>
                     <otherwise>
                         <enricher target="#[payload['CustomerNumber']]" doc:name="store result in CustomerNumber">
@@ -139,8 +134,13 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
 </BAPI_CUSTOMER_GETSALESAREAS>]]></sap:definition>
 
 
+
+
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_CUSTOMER_GETSALESAREAS_to_Sales_Areas" doc:name="BAPI_CUSTOMER_GETSALESAREAS to Sales Areas"/>
+                                <expression-component doc:name="Set sales area if it is not set already"><![CDATA[if(payload.isEmpty()){
+	payload.add(new java.util.HashMap());
+}]]></expression-component>
                             </processor-chain>
                             <enrich source="#[payload[0]['SalesOrganization']]" target="#[payload['SalesOrganization']]"/>
                             <enrich source="#[payload[0]['DistributionChannel']]" target="#[payload['DistributionChannel']]"/>
@@ -149,15 +149,19 @@ payload['CustomerName'] = '${account.sapRefCustomer}';
                     </otherwise>
                 </choice>
             </batch:step>
-            <batch:step name="setDummyAccountIdStep" accept-expression="'assignDummyAccount' == '${account.sync.policy}'">
-                <expression-component doc:name="set customer number"><![CDATA[payload.put('CustomerNumber', '${account.sapCustomerNumber}');
-payload['SalesOrganization'] = '${account.sapSalesOrganization}';
-payload['DistributionChannel'] = '${account.sapDistributionChannel}';
-payload['Division'] = '${account.sapDivision}';
-payload['RefCustomer'] = '${account.sapRefCustomer}';
-payload['CustomerName'] = '${account.sapRefCustomer}';]]></expression-component>
+            <batch:step name="checkTheValidityOfSalesArea">
+                <expression-component doc:name="Set isValidSalesArea according to the validity of SalesOrganization, DistributionChannel and Division"><![CDATA[if (payload['SalesOrganization'] == null || payload['DistributionChannel'] == null || payload['Division'] == null){
+	payload['isValidSalesArea'] = false;
+} else {
+	payload['isValidSalesArea'] = true;
+}]]></expression-component>
             </batch:step>
-			<batch:step name="foreachOpportunityInSalesforceInsertSalesOrderInSapStep" accept-expression="payload['salesOrderInSap'] is NullPayload">
+
+			<batch:step name="ignoreOpportunityWithNotValidSalesArea" accept-expression="!(payload['isValidSalesArea'])">
+                <logger message="Ignoring Opportunity with not valid sales area in SAP." level="INFO" doc:name="log 'Ignoring Opportunity with not valid sales area in SAP'"/>
+            </batch:step>
+            
+			<batch:step name="foreachOpportunityInSalesforceInsertSalesOrderInSapStep" accept-expression="(payload['salesOrderInSap'] is NullPayload) &amp;&amp; payload['isValidSalesArea']">
                 <logger message="Opportunities to create: #[payload]" level="INFO" doc:name="log Opportunities to create"/>
                 <expression-component doc:name="assign numbers to opportunity line items"><![CDATA[payload['CloseDate'] = payload['CloseDate'].replace("-", "");
 payload.put('CurrencyIsoCode','EUR');
@@ -166,7 +170,7 @@ if (payload['OpportunityLineItems'] != null) {
 	for (record : payload['OpportunityLineItems']['records']) {
 		num += 10;
 		record['ITM_NUMBER'] =String.format("%06d", Integer.parseInt(num));
-	}
+	} 
 }]]></expression-component>
                 <data-mapper:transform config-ref="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" doc:name="Opportunity to BAPI_SALESORDER_CREATEFROMDAT2"/>
                 <sap:outbound-endpoint connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_CREATEFROMDAT2" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_SALESORDER_CREATEFROMDAT2" bapiTransaction="true" exchange-pattern="request-response" evaluateFunctionResponse="true"/>
@@ -175,7 +179,7 @@ if (payload['OpportunityLineItems'] != null) {
                 <expression-component doc:name="don't do update"><![CDATA[payload = new HashMap();
 payload.put('salesOrderInSap', NullPayload.getInstance());]]></expression-component>
 			</batch:step>
-            <batch:step name="foreachOpportunityInSalesforceUpdatesalesorderInSapStep" accept-expression="!(payload['salesOrderInSap'] is NullPayload)">
+            <batch:step name="foreachOpportunityInSalesforceUpdatesalesorderInSapStep" accept-expression="!(payload['salesOrderInSap'] is NullPayload) &amp;&amp; payload['isValidSalesArea'] ">
                 <expression-component doc:name="assign numbers to opportunity line items"><![CDATA[payload['CloseDate'] = payload['CloseDate'].replace("-", "");
 payload.put('CurrencyIsoCode','EUR');
 int max = 0;
@@ -194,6 +198,7 @@ if (payload['OpportunityLineItems'] != null) {
                 <byte-array-to-string-transformer doc:name="Byte Array to String"/>
                 <logger message="Update result: #[payload]" level="INFO" doc:name="log Result"/>
             </batch:step>
+            
 		</batch:process-records>
 		<batch:on-complete>
 			<json:object-to-json-transformer

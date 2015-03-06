@@ -20,6 +20,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
 		<PURCHASE_ORDER_NUMBER>#[payload['Id']]</PURCHASE_ORDER_NUMBER>
 	</import>
 </BAPI_SALESORDER_GETLIST>]]></sap:definition>
+
         </sap:outbound-endpoint>
         <data-mapper:transform config-ref="BAPI_SALESORDER_GETLIST_to_Sales_Order" doc:name="BAPI_SALESORDER_GETLIST to Sales Order"/>
         <choice doc:name="Choice">
@@ -46,6 +47,7 @@ http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/m
     </tables>
 </BAPI_ISAORDER_GETDETAILEDLIST>
 ]]></sap:definition>
+
                 </sap:outbound-endpoint>
                 <byte-array-to-string-transformer doc:name="Byte Array to String"/>
                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
@@ -102,6 +104,7 @@ payload = iter.hasNext() ? iter.next() : NullPayload.getInstance();
 		</ORDER_HEADER_INX>
 	</import>
 </BAPI_SALESORDER_CHANGE>]]></sap:definition>
+
             </sap:outbound-endpoint>
             <logger message="Remove Opportunities from SAP result: #[payload]" level="INFO" doc:name="Logger"/>
         </foreach>
@@ -138,6 +141,7 @@ payload = iter.hasNext() ? iter.next() : NullPayload.getInstance();
     </tables>
 </BAPI_CUSTOMER_FIND>
 ]]></sap:definition>
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_CUSTOMER_FIND_to_Customer" doc:name="BAPI_CUSTOMER_FIND to Customer"/>
                     </processor-chain>
@@ -159,6 +163,7 @@ payload = iter.hasNext() ? iter.next() : NullPayload.getInstance();
 	</import>
 </ZMULE_CUSTOMER_DELETE>
 ]]></sap:definition>
+
             </sap:outbound-endpoint>
             <logger message="Remove Accounts from SAP result: #[payload]" level="INFO" doc:name="Logger"/>
         </foreach>
