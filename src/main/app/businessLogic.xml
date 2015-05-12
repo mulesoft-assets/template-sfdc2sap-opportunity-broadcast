@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
+<mule xmlns:spring="http://www.springframework.org/schema/beans" xmlns:data-mapper="http://www.mulesoft.org/schema/mule/ee/data-mapper" xmlns:sap="http://www.mulesoft.org/schema/mule/sap" xmlns:batch="http://www.mulesoft.org/schema/mule/batch"
 	xmlns:sfdc="http://www.mulesoft.org/schema/mule/sfdc" 
 	xmlns="http://www.mulesoft.org/schema/mule/core"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	version="EE-3.5.2"
+	version="EE-3.6.2"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:json="http://www.mulesoft.org/schema/mule/json"
 	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
@@ -12,7 +12,8 @@ http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/ba
 http://www.mulesoft.org/schema/mule/sfdc http://www.mulesoft.org/schema/mule/sfdc/current/mule-sfdc.xsd
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
-http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd">
+http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schema/mule/ee/data-mapper/current/mule-data-mapper.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd">
     <data-mapper:config name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2" transformationGraphPath="opportunity_to_bapi_salesorder_createfromdat2.grf" doc:name="Opportunity_to_BAPI_SALESORDER_CREATEFROMDAT2"/>
     <data-mapper:config name="BAPI_SALESORDER_GETLIST_to_Sales_Order" transformationGraphPath="bapi_salesorder_getlist_to_sales_order.grf" doc:name="BAPI_SALESORDER_GETLIST_to_Sales_Order"/>
     <data-mapper:config name="Opportunity_to_BAPI_SALESORDER_CHANGE" transformationGraphPath="opportunity_to_bapi_salesorder_change.grf" doc:name="Opportunity_to_BAPI_SALESORDER_CHANGE"/>
@@ -23,7 +24,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 		<batch:threading-profile poolExhaustedAction="WAIT" />
 		<batch:process-records>
 			<batch:step name="foreachOpportunityInSalesforceGetSalesOrderInSapStep">
-                <enricher source="#[payload is NullPayload ? null : payload['Id']]" target="#[payload['SALESDOCUMENT']]" doc:name="Message Enricher">
+                <enricher source="#[payload is NullPayload ? null : payload['Id']]" target="#[payload['SALESDOCUMENT']]" doc:name="store result in  var 'SALESDOCUMENT'">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_SALESORDER_GETLIST" xmlVersion="2" outputXml="true" responseTimeout="10000" doc:name="BAPI_SALESORDER_GETLIST">
                             <sap:definition><![CDATA[<BAPI_SALESORDER_GETLIST>
@@ -35,6 +36,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
                         <data-mapper:transform config-ref="BAPI_SALESORDER_GETLIST_to_Sales_Order" doc:name="BAPI_SALESORDER_GETLIST to Sales Order"/>
                     </processor-chain>
                 </enricher>
+
                 <choice doc:name="Choice">
                     <when expression="#[payload['SALESDOCUMENT'] != null]">
                         <enricher source="#[payload]" target="#[payload['salesOrderInSap']]" doc:name="store result in record var 'salesorderInSap'">
@@ -61,6 +63,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 
 
 
+
                                 </sap:outbound-endpoint>
                                 <data-mapper:transform config-ref="BAPI_ISAORDER_GETDETAILEDLIST_to_Sales_Order" doc:name="BAPI_ISAORDER_GETDETAILEDLIST to Sales Order"/>
                             </processor-chain>
@@ -72,7 +75,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
                 </choice>
 			</batch:step>
 			 <batch:step name="findOrCreateCustomerInSapSetp" >
-                <enricher source="#[payload[0]['CustomerNumber'] == null ? NullPayload.getInstance() : payload[0]]" target="#[payload['customerInSap']]" doc:name="store result in customerInSap">
+                <enricher source="#[payload[0]['CustomerNumber'] == null ? NullPayload.getInstance() : payload[0]]" target="#[payload['customerInSap']]" doc:name="store result in var 'customerInSap'">
                     <processor-chain doc:name="Processor Chain">
                         <sap:outbound-endpoint exchange-pattern="request-response" connector-ref="SAP" type="function" functionName="BAPI_CUSTOMER_FIND" xmlVersion="2" outputXml="true" evaluateFunctionResponse="true" responseTimeout="10000" doc:name="Get Customer by Name">
                             <sap:definition><![CDATA[<BAPI_CUSTOMER_FIND type="function">
@@ -100,6 +103,7 @@ http://www.mulesoft.org/schema/mule/ee/data-mapper http://www.mulesoft.org/schem
 
 
 
+
                         </sap:outbound-endpoint>
                         <data-mapper:transform config-ref="BAPI_CUSTOMER_FIND_to_Customer" doc:name="BAPI_CUSTOMER_FIND to Customer"/>
                     </processor-chain>
@@ -113,7 +117,7 @@ payload['Division'] = '${account.sapDivision}';]]></expression-component>
 
                     </when>
                     <otherwise>
-                        <enricher target="#[payload['CustomerNumber']]" doc:name="store result in CustomerNumber">
+                        <enricher target="#[payload['CustomerNumber']]" doc:name="store result in 'CustomerNumber'">
      	                   <expression-transformer expression="#[payload['customerInSap']['CustomerNumber']]" doc:name="get new account id"/>
                         </enricher>
                         <enricher doc:name="store Sales Area">
@@ -124,6 +128,7 @@ payload['Division'] = '${account.sapDivision}';]]></expression-component>
 		<CUSTOMERNO>#[payload['customerInSap']['CustomerNumber']]</CUSTOMERNO>
 	</import>
 </BAPI_CUSTOMER_GETSALESAREAS>]]></sap:definition>
+
 
 
 
@@ -147,6 +152,7 @@ payload['Division'] = '${account.sapDivision}';]]></expression-component>
 } else {
 	payload['isValidSalesArea'] = true;
 }]]></expression-component>
+
             </batch:step>
 
 			<batch:step name="ignoreOpportunityWithNotValidSalesArea" accept-expression="!(payload['isValidSalesArea'])">
