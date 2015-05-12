@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -40,6 +42,7 @@ import com.sforce.soap.partner.SaveResult;
  */
 public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCase {
 
+	private static final Logger log = LogManager.getLogger(BusinessLogicTestCreateOpportunityIT.class);
 	private static final String POLL_FLOW_NAME = "triggerFlow";
 
 	private final Prober pollProber = new PollingProber(10000, 1000);
@@ -151,7 +154,7 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 			createdAccounts.get(i).put("Id", results.get(i).getId());
 		}
 
-		System.out.println("Results of data creation in sandbox" + createdAccounts.toString());
+		log.info("Results of data creation in sandbox" + createdAccounts.toString());
 	}
 
 	@SuppressWarnings("unchecked")
