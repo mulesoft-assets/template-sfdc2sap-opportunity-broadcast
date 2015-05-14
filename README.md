@@ -179,11 +179,6 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + watermark.default.expression `2014-08-14T10:15:00.000Z`
 + page.size `100`
 + timeOffsetBetweenSapAndSalesforce `-4000`
-
-+ account.sapCustomerNumber `0000400492`
-+ account.sapSalesOrganization `3020`
-+ account.sapDistributionChannel `30`
-+ account.sapDivision `00`
 		
 **SalesForce Connector configuration**
 
@@ -202,8 +197,15 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + sap.jco.lang `EN`
 + sap.default.accountGroup `ZAG2`
 
+**SAP Account(customer) configuration**
+
++ account.sapCustomerNumber `0000400492`
++ account.sapSalesOrganization `3020`
++ account.sapDistributionChannel `30`
++ account.sapDivision `00`
+
 # API Calls <a name="apicalls"/>
- 
+Salesforce imposes limits on the number of API Calls that can be made. However, in this template, only one call per poll cycle is done to retrieve all the information required.
 
 
 # Customize It!<a name="customizeit"/>
