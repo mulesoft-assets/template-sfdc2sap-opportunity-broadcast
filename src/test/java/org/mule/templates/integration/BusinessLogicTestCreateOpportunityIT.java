@@ -42,7 +42,7 @@ import com.sforce.soap.partner.SaveResult;
  */
 public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCase {
 
-	private static final Logger log = LogManager.getLogger(BusinessLogicTestCreateOpportunityIT.class);
+	private static final Logger LOGGER = LogManager.getLogger(BusinessLogicTestCreateOpportunityIT.class);
 	private static final String POLL_FLOW_NAME = "triggerFlow";
 
 	private final Prober pollProber = new PollingProber(10000, 1000);
@@ -67,8 +67,7 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 		// LastModifiedDate greater than ten seconds before current time
 		System.setProperty("watermark.default.expression", "#[groovy: new Date(System.currentTimeMillis() - 10000).format(\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\", TimeZone.getTimeZone('UTC'))]");
 
-		//System.setProperty("account.sync.policy", "syncAccount");
-		System.setProperty("account.id.in.b", "");
+		System.setProperty("account.sync.policy", "syncAccount");
 
 	}
 
@@ -115,18 +114,22 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 		// Wait for the batch job executed by the poll flow to finish
 		helper.awaitJobTermination(TIMEOUT_SEC * 1000, 500);
 		helper.assertJobWasSuccessful();
+		
+		Thread.sleep(20000);
 
-		Assert.assertEquals("The opportunity should not have been sync", null, invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(0)));
+		Assert.assertNull("The opportunity should not have been sync", invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(0)).get("Id"));
 
-		Assert.assertEquals("The opportunity should not have been sync", null, invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(1)));
+		Assert.assertNull("The opportunity should not have been sync", invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(1)).get("Id"));
 
 		Map<String,Object> dummyAccount = new HashMap<String,Object>();
-		dummyAccount.put("Name", "sfdc2sap_opp_bc_i0qpkqq3 Company");
+		dummyAccount.put("Name", "sfdc2sap_i0qpkqq3");
 		
 		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, dummyAccount);
 		Map<String, Object> opportunityPayload = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(2));
-		Assert.assertEquals("The opportunity should have been sync", createdOpportunities.get(2).get("Name"), opportunityPayload == null ? null : opportunityPayload.get("Name"));
-		Assert.assertEquals("The opportunity should belong to a different account ", accountPayload.get("CustomerNumber"), opportunityPayload == null ? null : opportunityPayload.get("AccountId"));
+		
+		Assert.assertNotNull("The opportunity should have been sync", opportunityPayload == null ? null : opportunityPayload.get("Id"));
+		Assert.assertEquals("The opportunity should belong to a different account ", accountPayload == null ? null : accountPayload.get("CustomerNumber"), 
+																					 opportunityPayload == null ? null : opportunityPayload.get("AccountId"));
 	}
 
 	private void createTestDataInSandBox() throws MuleException, Exception {
@@ -154,7 +157,7 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 			createdAccounts.get(i).put("Id", results.get(i).getId());
 		}
 
-		log.info("Results of data creation in sandbox" + createdAccounts.toString());
+		LOGGER.info("Results of data creation in sandbox" + createdAccounts.toString());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -162,17 +165,17 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 		Flow flow = lookupFlowConstruct("createOpportunityInSalesforceFlow");
 
 		// This opportunity should not be sync
-		Map<String, Object> opportunity = createOpportunity("Salesforce", 0);
+		Map<String, Object> opportunity = createOpportunity(0);
 		opportunity.put("Amount", 300);
 		createdOpportunities.add(opportunity);
 
 		// This opportunity should not be sync
-		opportunity = createOpportunity("Salesforce", 1);
+		opportunity = createOpportunity(1);
 		opportunity.put("Amount", 1000);
 		createdOpportunities.add(opportunity);
 
 		// This opportunity should BE sync with it's account
-		opportunity = createOpportunity("Salesforce", 2);
+		opportunity = createOpportunity(2);
 		opportunity.put("Amount", 30000);
 		opportunity.put("AccountId", createdAccounts.get(0).get("Id"));
 		opportunity.put("StageName", "Closed Won");

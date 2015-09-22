@@ -91,12 +91,12 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 		return properties;
 	}
 
+
 	protected void deleteTestOpportunityFromSandBox(List<Map<String, Object>> createdOpportunities) throws Exception {
 		List<String> idList = new ArrayList<String>();
 
 		// Delete the created opportunities in Salesforce
 		Flow flow = lookupFlowConstruct("deleteOpportunityFromSalesforceFlow");
-//		flow.initialise();
 		for (Map<String, Object> c : createdOpportunities) {
 			idList.add((String) c.get("Id"));
 		}
@@ -105,12 +105,11 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 
 		// Delete the created opportunities in SAP
 		flow = lookupFlowConstruct("deleteSalesOrderFromSapFlow");
-//		flow.initialise();
 		for (Map<String, Object> c : createdOpportunities) {
-			System.out.println("CCC: " + c);
 			Map<String, Object> opportunity = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, c);
-			if (opportunity != null) {
-				idList.add((String) opportunity.get("Id"));
+			String opportunityId = (String)opportunity.get("Id");
+			if (opportunityId != null) {
+				idList.add(opportunityId);
 			}
 		}
 		flow.process(getTestEvent(idList, MessageExchangePattern.REQUEST_RESPONSE));
@@ -119,7 +118,6 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 	protected void deleteTestAccountFromSandBox(List<Map<String, Object>> createdAccounts) throws Exception {
 		// Delete the created accounts in Salesforce
 		Flow flow = lookupFlowConstruct("deleteAccountFromSalesforceFlow");
-//		flow.initialise();
 
 		List<Object> idList = new ArrayList<Object>();
 		for (Map<String, Object> c : createdAccounts) {
@@ -129,7 +127,6 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 
 		// Delete the created accounts in SAP
 		flow = lookupFlowConstruct("deleteAccountFromSapFlow");
-//		flow.initialise();
 		idList.clear();
 		for (Map<String, Object> c : createdAccounts) {
 			Map<String, Object> account = invokeRetrieveFlow(retrieveAccountFromSapFlow, c);
@@ -159,7 +156,7 @@ public abstract class AbstractTemplateTestCase extends FunctionalTestCase {
 		return resultPayload instanceof NullPayload ? null : (Map<String, Object>) resultPayload;
 	}
 
-	protected Map<String, Object> createOpportunity(String orgId, int sequence) throws ParseException {
+	protected Map<String, Object> createOpportunity(int sequence) throws ParseException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("Name", buildUniqueName(TEMPLATE_NAME, "OppName" + sequence + "_"));
 		map.put("StageName", "NoStage");
