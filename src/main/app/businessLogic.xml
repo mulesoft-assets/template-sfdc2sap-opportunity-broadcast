@@ -41,7 +41,7 @@ using (so = payload."BAPI_SALESORDER_GETLIST".tables."SALES_ORDERS".*row[0].SD_D
 
                     </processor-chain>
                 </enricher>
-                <choice doc:name="Choice">
+                <choice doc:name="Does the opportunity exist in SAP">
                     <when expression="#[payload['SALESDOCUMENT'] != null]">
                         <enricher source="#[payload]" target="#[payload['salesOrderInSap']]" doc:name="store result in record var 'salesorderInSap'">
                             <processor-chain doc:name="Processor Chain">
@@ -148,7 +148,7 @@ payload."BAPI_CUSTOMER_FIND".tables."RESULT_TAB".*row map {
                         </dw:transform-message>
                     </processor-chain>
                 </enricher>
-                <choice doc:name="Choice">
+                <choice doc:name="Does the customer exist in SAP">
                     <when expression="#[payload['CustomerNumber'] == null]">
 
 <dw:transform-message doc:name="Set customer and  sales areas from properties">

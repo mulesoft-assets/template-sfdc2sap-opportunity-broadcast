@@ -184,8 +184,8 @@ In order to use this Mule Anypoint Template you need to configure properties (Cr
 + account.sync.policy `syncAccount`	
 
 **Note:** the property **account.sync.policy** can take any of the two following values: 
-+ **empty_value**: if the propety has no value assigned to it then application will do nothing in what respect to the account and it'll just assign the account and sales areas from the properties file.
-+ **syncAccount**: it will try to get and fetch sales areas data from SAP Customer if exists.
++ **empty_value**: if the propety has no value assigned to it then application will do nothing in respect to the account and it'll just assign the account and sales areas from the properties file.
++ **syncAccount**: it will try to get and fetch sales areas data from SAP Customer if it exists.
 		
 **SalesForce Connector configuration**
 
