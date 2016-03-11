@@ -85,7 +85,6 @@ Salesforce imposes limits on the number of API Calls that can be made. However, 
 + sap.jco.sysnr `14`
 + sap.jco.client `800`
 + sap.jco.lang `EN`
-+ sap.default.accountGroup `ZAG2`
 
 **SAP Account(customer) configuration**
 
