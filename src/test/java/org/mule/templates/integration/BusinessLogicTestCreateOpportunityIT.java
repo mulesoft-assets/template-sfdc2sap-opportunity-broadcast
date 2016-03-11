@@ -122,7 +122,7 @@ public class BusinessLogicTestCreateOpportunityIT extends AbstractTemplateTestCa
 		Assert.assertNull("The opportunity should not have been sync", invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(1)).get("Id"));
 
 		Map<String,Object> dummyAccount = new HashMap<String,Object>();
-		dummyAccount.put("Name", "sfdc2sap_i0qpkqq3");
+		dummyAccount.put("Name", "60Megastore");
 		
 		Map<String, Object> accountPayload = invokeRetrieveFlow(retrieveAccountFromSapFlow, dummyAccount);
 		Map<String, Object> opportunityPayload = invokeRetrieveFlow(retrieveSalesOrderFromSapFlow, createdOpportunities.get(2));
