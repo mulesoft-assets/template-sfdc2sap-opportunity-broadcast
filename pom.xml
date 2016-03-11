@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.mule.templates</groupId>
 		<artifactId>templates-tooling-parent-pom</artifactId>
-		<version>1.2.3</version>
+		<version>1.2.8</version>
 	</parent>
 
 	<artifactId>template-sfdc2sap-opportunity-broadcast</artifactId>
@@ -17,7 +17,10 @@
 	<properties>
 		<sap.jco.version>3.0.13</sap.jco.version>
 		<sap.idoc.version>3.0.12</sap.idoc.version>
-	</properties>
+	<munit.version>1.1.0</munit.version>
+    <mule.munit.support.version>3.7.1</mule.munit.support.version>
+    <mule.version>3.7.3</mule.version>
+    </properties>
 
 	<build>
 		<plugins>
@@ -35,7 +38,15 @@
 							<groupId>com.mulesoft.muleesb.transports</groupId>
 							<artifactId>mule-transport-sap</artifactId>
 						</inclusion>
-					</inclusions>
+					<inclusion>
+                            <groupId>org.mule.modules</groupId>
+                            <artifactId>mule-module-extensions-support</artifactId>
+                        </inclusion>
+                    <inclusion>
+                            <groupId>org.mule.modules</groupId>
+                            <artifactId>mule-module-extensions-spring-support</artifactId>
+                        </inclusion>
+                    </inclusions>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -53,8 +64,30 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
-		</plugins>
-	</build>
+		<plugin>
+                <groupId>com.mulesoft.munit.tools</groupId>
+                <artifactId>munit-maven-plugin</artifactId>
+                <version>${munit.version}</version>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+	<testResources>
+            <testResource>
+                <directory>src/test/munit</directory>
+            </testResource>
+        <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
 
 	<dependencies>
 		<dependency>
@@ -108,6 +141,28 @@
 			<version>${mule.version}</version>
 			<scope>provided</scope>
 		</dependency>
+    <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>mule-munit-support</artifactId>
+            <version>${mule.munit.support.version}</version>
+            <scope>test</scope>
+        </dependency>
+    <dependency>
+            <groupId>com.mulesoft.munit</groupId>
+            <artifactId>munit-runner</artifactId>
+            <version>${munit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-extensions-support</artifactId>
+            <version>${mule.version}</version>
+        </dependency>
+    <dependency>
+            <groupId>org.mule.modules</groupId>
+            <artifactId>mule-module-extensions-spring-support</artifactId>
+            <version>${mule.version}</version>
+        </dependency>
     </dependencies>
 
 	<repositories>
