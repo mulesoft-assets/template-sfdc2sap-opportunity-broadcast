@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:sap="http://www.mulesoft.org/schema/mule/sap"
+    xmlns:os="http://www.mulesoft.org/schema/mule/os"
+    xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+
+    <os:object-store name="watermarkStore" doc:name="Object store" persistent="false" />
+
+    <configuration-properties doc:name="Configuration properties" doc:id="7584fb1d-2fa2-445a-b949-eed01f5785bd"
+        file="common.properties" />
+    <configuration-properties doc:name="Configuration properties" doc:id="86e0eb9d-cf2e-451a-9e09-b4afdf13e0e9"
+        file="mule.${mule.env}.properties" />
+    <configuration-properties doc:name="Configuration properties" doc:id="0abdf143-d5d1-4168-bdbd-7e3722442725"
+        file="mule-artifact.properties" />
+    <global-property doc:name="Global Property" name="mule.env" value="dev" />
+
+    <sap:outbound-config name="SAP_Outbound" doc:name="SAP Outbound" doc:id="90b6984c-ad43-4f7f-894e-dc226a3a3a8f">
+        <sap:simple-connection-provider-connection applicationServerHost="${sap.jco.ashost}"
+            username="${sap.jco.user}" password="${sap.jco.passwd}" systemNumber="${sap.jco.sysnr}" client="${sap.jco.client}"
+            language="${sap.jco.lang}" />
+    </sap:outbound-config>
+
+    <salesforce:sfdc-config name="Salesforce" doc:name="Salesforce Config" doc:id="c01bd144-4ab6-40a8-87bf-7276fbe1e30e">
+        <salesforce:basic-connection username="${sfdc.username}" password="${sfdc.password}"
+            securityToken="${sfdc.securityToken}" />
+    </salesforce:sfdc-config>
+
+</mule>
+
+        
