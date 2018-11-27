@@ -9,12 +9,12 @@
 This template is subject to the conditions of the <a href="https://s3.amazonaws.com/templates-examples/AnypointTemplateLicense.pdf">MuleSoft License Agreement</a>. Review the terms of the license before downloading and using this template. You can use this template for free with the Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio. 
 # Use Case
 <!-- Use Case (start) -->
-This Anypoint Template should serve as a foundation for setting an online sync of won opportunities from Salesforce to Sales orders in SAP.
+This Anypoint template serves as a foundation for setting an online sync of won opportunities from Salesforce to Sales orders in SAP.
 Every time there is a new won opportunity or a change in an already existing one with assigned Account in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
 			
 Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
 			
-As implemented, this Anypoint Template leverages the [Batch Module](http://www.mulesoft.org/documentation/display/current/Batch+Processing).
+As implemented, this template leverages the Mule batch module.
 The batch job is divided into *Process* and *On Complete* stages.
 
 The integration is triggered by scheduler to Salesforce opportunities. New or modified opportunities, which fulfill *IsWon* and *HasAccount* criteria are passed to the batch as input.
@@ -28,7 +28,7 @@ On the other hand, if the property account.sync.policy is set to different value
 Template doesn't support changing customer of the existing sales order.
 
 Another step creates or updates sales order in SAP. 
-Finally during the On Complete stage the Anypoint Template will log output statistics data into the console.
+Finally during the On Complete stage the template logs output statistics data into the console.
 <!-- Use Case (end) -->
 
 # Considerations
@@ -37,10 +37,10 @@ Finally during the On Complete stage the Anypoint Template will log output stati
 <!-- Default Considerations (end) -->
 
 <!-- Considerations (start) -->
-To make this Anypoint Template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made in order for all to run smoothly.
+To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made for the template to run smoothly.
 **Failing to do so could lead to unexpected behavior of the template.**
 
-Before continue with the use of this Anypoint Template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
+Before continue with the use of this template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
 with SAP and Anypoint Studio.
 
 ## Disclaimer
@@ -135,7 +135,7 @@ After you import your template into Anypoint Studio, follow these steps to run i
 + Inside the dialog, select Environment and set the variable `mule.env` to the value `dev`.
 + Click `Run`.
 <!-- Running on Studio (start) -->
-In order to make this Anypoint Template run on Mule Studio there are a few extra steps that need to be made.
+In order to make this template run on Mule Studio there are a few extra steps that need to be made.
 Please check this Documentation Page:
 
 + [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
@@ -161,7 +161,7 @@ In Studio, right click your project name in Package Explorer and select Anypoint
 To use this template, configure properties such as credentials, configurations, etc.) in the properties file or in CloudHub from Runtime Manager > Manage Application > Properties. The sections that follow list example values.
 ### Application Configuration
 <!-- Application Configuration (start) -->
-**Common configuration**
+**Common Configuration**
 
 + scheduler.frequency `10000`
 + scheduler.start.delay `1000`
@@ -173,13 +173,13 @@ To use this template, configure properties such as credentials, configurations, 
 + **empty_value**: if the property has no value assigned to it then application will do nothing in respect to the account and it'll just assign the account and sales areas from the properties file.
 + **syncAccount**: it will try to get and fetch sales areas data from SAP Customer if it exists.
 		
-**Salesforce Connector configuration**
+**Salesforce Connector Configuration**
 
 + sfdc.username `bob.dylan@sfdc`
 + sfdc.password `DylanPassword123`
 + sfdc.securityToken `avsfwCUl7apQs56Xq2AKi3X`
 
-**SAP Connector configuration**
+**SAP Connector Configuration**
 
 + sap.jco.ashost `your.sap.address.com`
 + sap.jco.user `SAP_USER`
@@ -188,7 +188,7 @@ To use this template, configure properties such as credentials, configurations, 
 + sap.jco.client `800`
 + sap.jco.lang `EN`
 
-**SAP Account(customer) configuration**
+**SAP Account(customer) Configuration**
 
 + account.sapCustomerNumber `0000400492`
 + account.sapSalesOrganization `3020`
