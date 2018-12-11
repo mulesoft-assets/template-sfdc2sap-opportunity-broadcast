@@ -2,6 +2,19 @@
 # Anypoint Template: Salesforce to SAP Opportunity Broadcast	
 
 <!-- Header (start) -->
+Broadcasts changes or creates of opportunities from Salesforce to SAP in real time. The detection criteria and fields to move are configurable. Additional systems can be added to be notified of the changes. 
+
+Real time synchronization is achieved either via rapid polling of Salesforce or outbound notifications to reduce the number of API calls. This template uses Mule batching and watermarking to capture only recent changes and to efficiently process large amounts of records.
+
+![aaf185ad-96ea-48a3-a21c-034bc5bead2a-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/aaf185ad-96ea-48a3-a21c-034bc5bead2a-image.png)
+
+![1da986db-0b12-49bf-85bb-ae3b3215d239-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/1da986db-0b12-49bf-85bb-ae3b3215d239-image.png)
+
+![69d038cc-93f8-4943-a1e0-5d3b2d1c651c-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/69d038cc-93f8-4943-a1e0-5d3b2d1c651c-image.png)
+
+![fe23a3e1-c82c-4063-b4b1-3d1535ca21c7-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/fe23a3e1-c82c-4063-b4b1-3d1535ca21c7-image.png)
+
+![e8dadb36-0770-46d4-ac6c-f9edf93703d3-image.png](https://exchange2-file-upload-service-kprod.s3.us-east-1.amazonaws.com:443/e8dadb36-0770-46d4-ac6c-f9edf93703d3-image.png)
 
 <!-- Header (end) -->
 
@@ -9,26 +22,16 @@
 This template is subject to the conditions of the <a href="https://s3.amazonaws.com/templates-examples/AnypointTemplateLicense.pdf">MuleSoft License Agreement</a>. Review the terms of the license before downloading and using this template. You can use this template for free with the Mule Enterprise Edition, CloudHub, or as a trial in Anypoint Studio. 
 # Use Case
 <!-- Use Case (start) -->
-This Anypoint template serves as a foundation for setting an online sync of won opportunities from Salesforce to Sales orders in SAP.
-Every time there is a new won opportunity or a change in an already existing one with assigned Account in Salesforce instance, the template will fetch it and send it to SAP to upsert sales order there.
+This template performs an online sync of won opportunities from Salesforce to sales orders in SAP.
+When there is a new won opportunity or a change in an existing one with an assigned account in a Salesforce instance, the template fetches the opportunity and sends it to SAP to upsert in a sales order. You can use this template as an example or as a starting point to adapt your integration to your requirements.
 			
-Requirements have been set not only to be used as examples, but also to establish a starting point to adapt your integration to your requirements.
-			
-As implemented, this template leverages the Mule batch module.
-The batch job is divided into *Process* and *On Complete* stages.
+This template leverages the Mule batch module. The batch job is divided into *Process* and *On Complete* stages. The integration is triggered by a scheduler to Salesforce opportunities. New or modified opportunities, which fulfill the *IsWon* and *HasAccount* criteria are passed to the batch as input. In the batch, the sales order is fetched from SAP by its purchase order number equal to opportunity ID. If it exists, more sales order details are fetched from SAP.
 
-The integration is triggered by scheduler to Salesforce opportunities. New or modified opportunities, which fulfill *IsWon* and *HasAccount* criteria are passed to the batch as input.
-In the batch, the sales order is fetched from SAP by its purchase order number equal to opportunity ID.
-If it exists, more sales order details are fetched from SAP.
+In next batch step if the property account.sync.policy is set to 'syncAccount', the customer is looked up by the opportunity account name. If the customer is found, its sales areas are fetched from SAP and the first one is selected to be used for sales order creation. If it is not found, then a dummy customer is used with a preconfigured sales area and customer number. If the property account.sync.policy is set to different value, the preconfigured sales area and customer number are used. 
 
-In next batch step if the property account.sync.policy is set to 'syncAccount', the customer is looked up by opportunity account name.
-If the customer is found, its sales areas are fetched from SAP and first one is selected to be used for sales order creation.
-If it is not found, then the dummy customer is used with pre-configured sales area and customer number.
-On the other hand, if the property account.sync.policy is set to different value, the pre-configured sales area and customer number are used.
-Template doesn't support changing customer of the existing sales order.
+The template doesn't support changing the customer of an existing sales order.
 
-Another step creates or updates sales order in SAP. 
-Finally during the On Complete stage the template logs output statistics data into the console.
+Another step creates or updates sales order in SAP. Finally during the On Complete stage the template logs output statistics data into the console.
 <!-- Use Case (end) -->
 
 # Considerations
@@ -37,15 +40,13 @@ Finally during the On Complete stage the template logs output statistics data in
 <!-- Default Considerations (end) -->
 
 <!-- Considerations (start) -->
-To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made for the template to run smoothly.
-**Failing to do so could lead to unexpected behavior of the template.**
+To make this template run, there are certain preconditions that must be considered. All of them deal with the preparations in both, that must be made for the template to run smoothly. Failing to do so can lead to unexpected behavior of the template.
 
-Before continue with the use of this template, you may want to check out this [Documentation Page](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP), that will teach you how to work 
-with SAP and Anypoint Studio.
+Before continuing with the use of this template, see [Install the SAP Connector in Studio](https://docs.mulesoft.com/connectors/sap/sap-connector#install-the-sap-connector-in-studio).
 
 ## Disclaimer
 
-This Anypoint template uses a few private Maven dependencies from Mulesoft in order to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml file.
+This Anypoint template uses a few private Maven dependencies from Mulesoft to work. If you intend to run this template with Maven support, you need to add three extra dependencies for SAP to the pom.xml file.
 <!-- Considerations (end) -->
 
 
@@ -75,25 +76,16 @@ exceptionMessage='Account.Phone, Account.Rating, Account.RecordTypeId,
 Account.ShippingCity
 ^
 ERROR at Row:1:Column:486
-No such column 'RecordTypeId' on entity 'Account'. If you are attempting to 
-use a custom field, be sure to append the '__c' after the custom field name. 
-Reference your WSDL or the describe call for the appropriate names.'
+No such column 'RecordTypeId' on entity 'Account'. If you are 
+attempting to use a custom field, be sure to append the '__c' 
+after the custom field name. Reference your WSDL or the describe 
+call for the appropriate names.'
 ]
 row='1'
 column='486'
 ]
 ]
 ```
-
-
-
-
-
-
-
-
-
-
 
 # Run it!
 Simple steps to get this template running.
@@ -127,18 +119,15 @@ In Studio, click the Exchange X icon in the upper left of the taskbar, log in wi
 ### Running on Studio
 After you import your template into Anypoint Studio, follow these steps to run it:
 
-+ Locate the properties file `mule.dev.properties`, in src/main/resources.
-+ Complete all the properties required as per the examples in the "Properties to Configure" section.
-+ Right click the template project folder.
-+ Hover your mouse over `Run as`.
-+ Click `Mule Application (configure)`.
-+ Inside the dialog, select Environment and set the variable `mule.env` to the value `dev`.
-+ Click `Run`.
+1. Locate the properties file `mule.dev.properties`, in src/main/resources.
+2. Complete all the properties required per the examples in the "Properties to Configure" section.
+3. Right click the template project folder.
+4. Hover your mouse over `Run as`.
+5. Click `Mule Application (configure)`.
+6. Inside the dialog, select Environment and set the variable `mule.env` to the value `dev`.
+7. Click `Run`.
 <!-- Running on Studio (start) -->
-In order to make this template run on Mule Studio there are a few extra steps that need to be made.
-Please check this Documentation Page:
-
-+ [Enabling Your Studio Project for SAP](http://www.mulesoft.org/documentation/display/current/SAP+Connector#SAPConnector-EnablingYourStudioProjectforSAP)
+To make this template run in Studio see [Install the SAP Connector in Studio](https://docs.mulesoft.com/connectors/sap/sap-connector#install-the-sap-connector-in-studio).
 <!-- Running on Studio (end) -->
 
 ### Running on Mule Standalone
@@ -169,9 +158,10 @@ To use this template, configure properties such as credentials, configurations, 
 
 + account.sync.policy `syncAccount`	
 
-**Note:** the property **account.sync.policy** can take any of the two following values: 
-+ **empty_value**: if the property has no value assigned to it then application will do nothing in respect to the account and it'll just assign the account and sales areas from the properties file.
-+ **syncAccount**: it will try to get and fetch sales areas data from SAP Customer if it exists.
+**Note:** The property **account.sync.policy** can take any of the two following values:
+
++ **empty_value**: If the property has no value assigned to it, then the application does nothing in respect to the account and just assigns the account and sales areas from the properties file.
++ **syncAccount**: It tries to get and fetch sales areas data from SAP customer if it exists.
 		
 **Salesforce Connector Configuration**
 
@@ -198,7 +188,7 @@ To use this template, configure properties such as credentials, configurations, 
 
 # API Calls
 <!-- API Calls (start) -->
-Salesforce imposes limits on the number of API Calls that can be made. However, in this template, only one call per poll cycle is done to retrieve all the information required.
+Salesforce imposes limits on the number of API calls that can be made. However, in this template, only one call per poll cycle is done to retrieve all the information required.
 <!-- API Calls (end) -->
 
 # Customize It!
@@ -213,7 +203,8 @@ This brief guide provides a high level understanding of how this template is bui
 
 ## config.xml
 <!-- Default Config XML (start) -->
-This file provides the configuration for connectors and configuration properties. Only change this file to make core changes to the connector processing logic. Otherwise, all parameters that can be modified should instead be in a properties file, which is the recommended place to make changes.<!-- Default Config XML (end) -->
+This file provides the configuration for connectors and configuration properties. Only change this file to make core changes to the connector processing logic. Otherwise, all parameters that can be modified should instead be in a properties file, which is the recommended place to make changes.
+<!-- Default Config XML (end) -->
 
 <!-- Config XML (start) -->
 
@@ -221,7 +212,8 @@ This file provides the configuration for connectors and configuration properties
 
 ## businessLogic.xml
 <!-- Default Business Logic XML (start) -->
-The business logic XML file creates or updates objects in the destination system for a represented use case. You can customize and extend the logic of this template in this XML file to more meet your needs.<!-- Default Business Logic XML (end) -->
+The business logic XML file creates or updates objects in the destination system for a use case. You can customize and extend the logic of this template in this XML file to meet your needs.
+<!-- Default Business Logic XML (end) -->
 
 <!-- Business Logic XML (start) -->
 
@@ -229,7 +221,8 @@ The business logic XML file creates or updates objects in the destination system
 
 ## endpoints.xml
 <!-- Default Endpoints XML (start) -->
-This file contains the endpoints for triggering the template and for retrieving the objects that meet the defined criteria in a query. You can execute a batch job process with the query results.<!-- Default Endpoints XML (end) -->
+This file contains the endpoints for triggering the template and for retrieving the objects that meet the defined criteria in a query. You can execute a batch job process with the query results.
+<!-- Default Endpoints XML (end) -->
 
 <!-- Endpoints XML (start) -->
 
@@ -237,7 +230,8 @@ This file contains the endpoints for triggering the template and for retrieving 
 
 ## errorHandling.xml
 <!-- Default Error Handling XML (start) -->
-This file handles how your integration reacts depending on the different exceptions. This file provides error handling that is referenced by the main flow in the business logic.<!-- Default Error Handling XML (end) -->
+This file handles how your integration reacts depending on the different exceptions. This file provides error handling that is referenced by the main flow in the business logic.
+<!-- Default Error Handling XML (end) -->
 
 <!-- Error Handling XML (start) -->
 
