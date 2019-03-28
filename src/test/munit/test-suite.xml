@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:sap="http://www.mulesoft.org/schema/mule/sap" 
+    xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+    xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+    xmlns="http://www.mulesoft.org/schema/mule/core"
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+		http://www.mulesoft.org/schema/mule/sap http://www.mulesoft.org/schema/mule/sap/current/mule-sap.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+    <munit:config name="test-suite.xml" />
+    <configuration-properties doc:name="Configuration properties" doc:id="e5bfeef3-95be-45cd-a63d-4b49422514a5"
+    file="mule.test.properties" />
+    <munit:before-test name="test-suiteBefore_Test" description="Before tests actions" doc:id="548e9bdc-4c44-41d0-a53f-711709d69c33" >
+		<flow-ref doc:name="Call query flow" doc:id="c90e3308-eaaf-4328-a4f9-5a98554c7023" name="queryFlow" />
+		<ee:transform doc:name="Filter records" doc:id="ed6e7c3f-2800-4450-8775-c9c8ecebc1ef">
+				<ee:message>
+				</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="inputData" ><![CDATA[%dw 2.0
+output application/java
+---
+payload filter ($.Name == p('opportunity.name'))
+]]></ee:set-variable>
+			</ee:variables>
+			</ee:transform>
+		<flow-ref doc:name="updateSapDataSubFlow" doc:id="38716354-2c4e-4d26-a344-c815e4e3744e" name="updateSapDataSubFlow"/>
+	</munit:before-test>
+		<sub-flow name="updateSapDataSubFlow" doc:id="64db89f3-3e75-471c-8df7-f606af68858b" >
+		<ee:transform doc:name="Set XML input" doc:id="35ed06eb-72f7-4cfb-9762-3a1fd5222580" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	"BAPI_SALESORDER_GETLIST": {
+		"import": {
+			"PURCHASE_ORDER_NUMBER": vars.inputData[0].Id
+		}
+	}
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="opportunity" ><![CDATA[%dw 2.0
+output application/java
+---
+payload[0]]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+					<sap:execute-synchronous-remote-function-call doc:id="7625d8f8-e4b1-4742-9a70-41f29134535a" doc:name="BAPI GETLIST" config-ref="SAP_Outbound" key="BAPI_SALESORDER_GETLIST"/>
+					<ee:transform doc:name="Store result to variable oppotunity" doc:id="38b9e2e2-5519-4d85-a9bb-a577b9e5318c" >
+						<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+  "BAPI_ISAORDER_GETDETAILEDLIST": {
+    "import": {
+      "I_BAPI_VIEW": {
+        "ITEM": "X",
+        "SDCOND": "X"
+      }
+    },
+    "tables": {
+      "SALES_DOCUMENTS": {
+        "row": {
+          "VBELN": payload."BAPI_SALESORDER_GETLIST".tables."SALES_ORDERS".*row[0].SD_DOC
+        }
+      }
+    }
+  }
+}]]></ee:set-payload>
+			</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="opportunity" ><![CDATA[%dw 2.0
+output application/java
+---
+vars.inputData[0] ++ {
+	SALESDOCUMENT: payload."BAPI_SALESORDER_GETLIST".tables."SALES_ORDERS".*row[0].SD_DOC
+}]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+		<sap:execute-synchronous-remote-function-call doc:name="BAPI GETDETAILEDLIST" doc:id="5e6ad0d1-4be6-41a9-b240-730223e487e6" config-ref="SAP_Outbound" key="BAPI_ISAORDER_GETDETAILEDLIST" />
+		<set-payload value="#[%dw 2.0
+output application/java
+---
+vars.opportunity ++ {
+	SalesOrganization : p('account.sapSalesOrganization'),
+	DistributionChannel : p('account.sapDistributionChannel'),
+	Division : p('account.sapDivision'),
+	CustomerNumber : p('account.sapCustomerNumber'),
+	salesOrderInSap: {
+		(Conditions: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_CONDITIONS_OUT&quot;.*row map {
+			ITM_NUMBER : $.ITM_NUMBER,
+			Id : $.SD_DOC
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_CONDITIONS_OUT&quot; != null),
+		(Items: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_ITEMS_OUT&quot;.*row map {
+			ITM_NUMBER : $.ITM_NUMBER,
+			Id : $.DOC_NUMBER
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_ITEMS_OUT&quot; != null),
+		(Partners: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_PARTNERS_OUT&quot;.*row map {
+			Id : $.SD_DOC,
+			customerId : $.CUSTOMER
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_PARTNERS_OUT&quot; != null),
+		(StatusHeaders: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_STATUSHEADERS_OUT&quot;.*row map {
+			Id : $.SD_DOC,
+			Status : $.ISA_DOC_STATUS
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_STATUSHEADERS_OUT&quot; != null),
+		(TextHeaders: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_TEXTHEADERS_OUT&quot;.*row map {
+			TextName : $.TEXT_NAME,
+			Id : $.SD_DOC
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_TEXTHEADERS_OUT&quot; != null),
+		(TextLines: payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_TEXTLINES_OUT&quot;.*row map {
+			Line : $.LINE,
+			TextName : $.TEXT_NAME
+		})  if (payload.&quot;BAPI_ISAORDER_GETDETAILEDLIST&quot;.tables.&quot;ORDER_TEXTLINES_OUT&quot; != null)
+	}
+}]" doc:name="Transform BAPI_ISAORDER_GETDETAILEDLIST to Sales Order" doc:id="e3facd1e-6bc0-4c04-9586-d9348e6c2fb7"/>
+            <ee:transform doc:name="Transform Opportunity to BAPI_SALESORDER_CHANGE" doc:id="3c76ce02-931f-45c3-9db0-ba6e72ee195a" >
+								<ee:message >
+									<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+fun convertToArray(record) = {
+	records : if (record is Array) record else [record]
+}
+fun createItmNumber(position) = {
+	ITM_NUMBER : (10 * position) as String {format: "000000"}
+}
+---
+"BAPI_SALESORDER_CREATEFROMDAT2"
+: {
+	"import": {
+		"ORDER_HEADER_IN": {
+			"DOC_TYPE": "TA",
+			"SALES_ORG": payload.SalesOrganization,
+			"DISTR_CHAN": payload.DistributionChannel,
+			"DIVISION": payload.Division,
+			"REQ_DATE_H": if(payload.CloseDate != null) payload.CloseDate replace "-" with "" else null,
+			"PURCH_NO_C": payload.Id,
+			"CURRENCY": "USD"
+		}
+	},
+	"tables": {
+		("ORDER_CONDITIONS_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
+				"row" : {
+					"ITM_NUMBER": createItmNumber($$ + 1).ITM_NUMBER,
+					"COND_TYPE": "PR00",
+					"COND_VALUE": $.Quantity
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		("ORDER_ITEMS_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
+				"row" : {
+					"ITM_NUMBER": createItmNumber($$ + 1).ITM_NUMBER,
+					"MATERIAL": $.PricebookEntry.Product2."sap_external_id__c",
+					"TARGET_QTY": $.Quantity
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		("ORDER_ITEMS_INX": {
+			( convertToArray(payload.OpportunityLineItems).records map {
+				"row" : {
+					"MATERIAL" : "X",
+					"UPDATEFLAG" : "I",
+					"ITM_NUMBER" : createItmNumber($$ + 1).ITM_NUMBER
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		"ORDER_PARTNERS": {
+			"row" @(id: 1): {
+				"PARTN_ROLE": "AG",
+				"PARTN_NUMB": payload.CustomerNumber
+			}
+		},
+		("ORDER_SCHEDULES_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
+				"row" : {
+					"ITM_NUMBER" : createItmNumber($$ + 1).ITM_NUMBER,
+					"REQ_QTY": $.Quantity
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		"ORDER_TEXT": {
+			"row" @(id: 1): {
+				"TEXT_ID": "0002",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.Description
+			},
+			"row" @(id: 2): {
+				"TEXT_ID": "0011",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.ForecastCategory
+			},
+			"row" @(id: 3): {
+				"TEXT_ID": "0001",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.Name
+			}
+		}
+	}
+}
+
+]]></ee:set-payload>
+								</ee:message>
+							</ee:transform>
+							<try doc:name="Try" doc:id="450b81ea-d70c-4da3-866f-087144c1d419" transactionalAction="ALWAYS_BEGIN">
+								<sap:execute-synchronous-remote-function-call key="BAPI_SALESORDER_CHANGE" doc:name="BAPI_SALESORDER_CHANGE" doc:id="e738947b-0457-45a4-8b5e-930ac23646c4" config-ref="SAP_Outbound" transactionalAction="ALWAYS_JOIN"/>
+							</try>
+            </sub-flow>
+	<sub-flow name="guerySapDataSubFlow" doc:id="fb262ea3-9882-4346-a30c-ebb352c65987" >
+		<ee:transform doc:name="Set XML input" doc:id="dd48ca98-af76-4213-9e58-4565db1ef33e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	"BAPI_SALESORDER_GETLIST": {
+		"import": {
+			"PURCHASE_ORDER_NUMBER": vars.inputData[0].Id
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<sap:execute-synchronous-remote-function-call doc:id="f4f97107-304d-4799-9257-ca89f89cbed6" doc:name="BAPI_SALESORDER_GETLIST" config-ref="SAP_Outbound" key="BAPI_SALESORDER_GETLIST"/>
+		<ee:transform doc:name="Currency Response" doc:id="3a3e5284-4820-4470-9b11-b47097d752dd">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+	currency:payload.BAPI_SALESORDER_GETLIST.tables."SALES_ORDERS".row.CURRENCY
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+					
+	</sub-flow>
+	<munit:test name="test-suite-FlowTest" description="Test" doc:id="40c8251f-4551-43b3-9762-babdee88d912">
+        <munit:execution>
+			<ee:transform doc:name="Set test data" doc:id="49b0895e-8863-43f3-826b-44856ddd3af2" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+vars.inputData]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<flow-ref doc:name="Call Business Logic" doc:id="10790d61-47f6-4797-982a-7b9c022c4589" name="businessLogicFlow"/>
+			<scripting:execute doc:name="Wait for 120 seconds" doc:id="dc659cc3-1539-4ca7-bcf5-5e4f996af245" engine="Groovy">
+				<scripting:code >sleep(120000)</scripting:code>
+			</scripting:execute>
+			<flow-ref doc:name="Call Query Data from SAP" doc:id="04ecfef0-7b76-4304-a377-ec8feab659d7" name="guerySapDataSubFlow"/>
+        </munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that SalerOrder Currency was updated" doc:id="2d3a6112-4f22-4beb-8efc-f2d5ee913a4e" expression="#[payload.currency]" is='#[MunitTools::equalTo("EUR")]' message="SalerOrder Currency should be updated"/>
+		</munit:validation>
+    </munit:test>
+
+</mule>

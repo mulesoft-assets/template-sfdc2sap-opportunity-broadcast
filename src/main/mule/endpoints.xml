@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:os="http://www.mulesoft.org/schema/mule/os"
-    xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+    xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns="http://www.mulesoft.org/schema/mule/core"
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <flow name="schedulerFlow" doc:id="aff4106d-d2f6-4366-940a-a380dcb1cf73">
         <scheduler doc:name="Scheduler" doc:id="58b7c776-fbee-4753-9bea-f6cc3e037efd">
             <scheduling-strategy>
@@ -13,8 +14,8 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
             </scheduling-strategy>
         </scheduler>
         <flow-ref doc:name="queryFlow" doc:id="ada07859-8839-4751-9623-68a08d31a472" name="queryFlow" />
-        <flow-ref name="businessLogicFlow" doc:name="businessLogicFlow" doc:id="e16bf02c-b833-47de-afd5-2329ce1fab2b" />
-        <error-handler>
+        <flow-ref doc:name="businessLogicFlow" doc:id="aec41584-695a-491e-a184-6e2a39bda96b" name="businessLogicFlow"/>
+		<error-handler>
             <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate"
                 doc:id="488b507d-e26c-4c56-8759-8bb4f6645d71" type="ANY">
                 <flow-ref doc:name="errorHandlingFlow" doc:id="afdaf73c-0137-4d60-84f6-5c41234771a3" name="errorHandlingFlow" />
@@ -39,13 +40,13 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
                 Account.Type,
                 Account.Website FROM Opportunity WHERE LastModifiedDate &gt; :lastQueryTimestamp AND IsWon = true AND Account.Name != null
             </salesforce:salesforce-query>
-            <salesforce:parameters><![CDATA[#[output applicaton/java
+            <salesforce:parameters><![CDATA[#[output application/java
 ---
 {
 	"lastQueryTimestamp" : vars.lastQueryTimestamp
 }]]]></salesforce:parameters>
         </salesforce:query>
-		<logger level="INFO" doc:name="Log Opportunities to sync" doc:id="65934ef1-2939-4fab-bde9-1886331527ea" message="#['Opportunities to sync: ' ++ write(payload)]" />
+		<logger level="INFO" doc:name="Log Opportunities to sync" doc:id="65934ef1-2939-4fab-bde9-1886331527ea" message="Opportunities to sync: #[output application/json --- payload]" />
         <os:store key="watermark" failIfPresent="false" failOnNullValue="false" objectStore="watermarkStore" doc:name="Store lastQueryTimestamp">
             <os:value>#[max(payload map $.LastModifiedDate)]</os:value>
         </os:store>

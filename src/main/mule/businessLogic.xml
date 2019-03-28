@@ -37,10 +37,10 @@ payload]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
 					<sap:execute-synchronous-remote-function-call doc:id="8e91d619-b8bb-416e-95fb-a5ee170221bd" doc:name="BAPI_SALESORDER_GETLIST" config-ref="SAP_Outbound" key="BAPI_SALESORDER_GETLIST"/>
-					<ee:transform doc:name="Store result to variable oppotunity" doc:id="7fd463d3-2c00-4441-9f0f-272d08e200eb" >
+					<ee:transform doc:name="Store result to variable oppotunity" doc:id="7fd463d3-2c00-4441-9f0f-272d08e200eb">
 						<ee:message />
-						<ee:variables >
-							<ee:set-variable variableName="opportunity" ><![CDATA[%dw 2.0
+						<ee:variables>
+							<ee:set-variable variableName="opportunity"><![CDATA[%dw 2.0
 output application/java
 ---
 vars.opportunity ++ {
@@ -158,28 +158,19 @@ payload]]></ee:set-variable>
 						</ee:variables>
 					</ee:transform>
 					<sap:execute-synchronous-remote-function-call key="BAPI_CUSTOMER_FIND" doc:name="GET Customer by Name" doc:id="636c243d-9258-4f24-b0e5-37304c4423b9" config-ref="SAP_Outbound" />
-					<ee:transform doc:name="Transform BAPI_CUSTOMER_FIND to Payload" doc:id="ba2c1e3f-f676-451f-84c8-8f2cfcac614d" >
+					<ee:transform doc:name="Set CustomerNumber to opportunity" doc:id="ba2c1e3f-f676-451f-84c8-8f2cfcac614d" >
 						<ee:message >
 							<ee:set-payload ><![CDATA[%dw 2.0
 output application/java
----
-payload."BAPI_CUSTOMER_FIND".tables."RESULT_TAB".*row map {
+var customers = payload."BAPI_CUSTOMER_FIND".tables."RESULT_TAB".*row map {
 	CustomerNumber : if ($.CUSTOMER != "") $.CUSTOMER else null
+}
+---
+vars.opportunity ++ {
+	CustomerNumber : if (customers[0].CustomerNumber != null) customers[0].CustomerNumber else null
 }]]></ee:set-payload>
 						</ee:message>
 						<ee:variables />
-					</ee:transform>
-					<ee:transform doc:name="Set CustomerNumber to opportunity" doc:id="98a02084-91a5-4658-8d54-c6d674ab56c1" >
-						<ee:message >
-						</ee:message>
-						<ee:variables >
-							<ee:set-variable variableName="opportunity" ><![CDATA[%dw 2.0
-output application/java
----
-vars.opportunity ++ {
-	CustomerNumber : if (payload[0].CustomerNumber != null) payload[0].CustomerNumber else null
-}]]></ee:set-variable>
-						</ee:variables>
 					</ee:transform>
 					<choice doc:name="Does the customer exist in SAP?" doc:id="ae87df03-73b7-403e-bbe0-4d379de945b7">
 						<when expression="#[vars.opportunity.CustomerNumber == null]">
@@ -250,7 +241,7 @@ payload ++ {
 				<batch:step name="foreachOpportunityInSalesforceUpsertOpportunityInSAPStep" doc:id="78a74ab4-9b91-416d-985a-acda2ac377eb">
 					<choice doc:name="salesOrderInSap?" doc:id="b9fd2361-913e-410d-a781-f4844009d645" >
 						<when expression="isEmpty(payload.salesOrderInSap)" >
-							<ee:transform doc:name="Transform Opportunity to BAPI_SALESORDER_CHANGE" doc:id="b94a6cbb-4133-4bf3-ae45-e648c0f448bb">
+							<ee:transform doc:name="Transform Opportunity to BAPI_SALESORDER_CREATEFROMDAT2" doc:id="b94a6cbb-4133-4bf3-ae45-e648c0f448bb">
 								<ee:message>
 									<ee:set-payload><![CDATA[%dw 2.0
 output application/xml
@@ -261,70 +252,87 @@ fun createItmNumber(position) = {
 	ITM_NUMBER : (10 * position) as String {format: "000000"}
 }
 ---
-"BAPI_SALESORDER_CREATEFROMDAT2": {
-		"import": {
-			"ORDER_HEADER_IN": {
-				"DOC_TYPE": "TA",
-				"SALES_ORG": payload.SalesOrganization,
-				"DISTR_CHAN": payload.DistributionChannel,
-				"DIVISION": payload.Division,
-				"REQ_DATE_H": if(payload.CloseDate != null) payload.CloseDate replace "-" with "" else null,
-				"PURCH_NO_C": payload.Id,
-				"CURRENCY": "EUR"
-			}
-		},
-		"tables": {
-			("ORDER_CONDITIONS_IN": {( convertToArray(payload.OpportunityLineItems.records).records map {
+"BAPI_SALESORDER_CREATEFROMDAT2"
+: {
+	"import": {
+		"ORDER_HEADER_IN": {
+			"DOC_TYPE": "TA",
+			"SALES_ORG": payload.SalesOrganization,
+			"DISTR_CHAN": payload.DistributionChannel,
+			"DIVISION": payload.Division,
+			"REQ_DATE_H": if(payload.CloseDate != null) payload.CloseDate replace "-" with "" else null,
+			"PURCH_NO_C": payload.Id,
+			"CURRENCY": "EUR"
+		}
+	},
+	"tables": {
+		("ORDER_CONDITIONS_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
 				"row" : {
 					"ITM_NUMBER": createItmNumber($$ + 1).ITM_NUMBER,
 					"COND_TYPE": "PR00",
 					"COND_VALUE": $.Quantity
-					}
-			} )} ) if payload.OpportunityLineItems != null,
-			("ORDER_ITEMS_IN": {( convertToArray(payload.OpportunityLineItems.records).records map {
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		("ORDER_ITEMS_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
 				"row" : {
 					"ITM_NUMBER": createItmNumber($$ + 1).ITM_NUMBER,
 					"MATERIAL": $.PricebookEntry.Product2."sap_external_id__c",
 					"TARGET_QTY": $.Quantity
-					}				
-			} )} ) if payload.OpportunityLineItems != null,
-			("ORDER_ITEMS_INX": {( convertToArray(payload.OpportunityLineItems.records).records map {
+				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		("ORDER_ITEMS_INX": {
+			( convertToArray(payload.OpportunityLineItems).records map {
 				"row" : {
 					"MATERIAL" : "X",
 					"UPDATEFLAG" : "I",
 					"ITM_NUMBER" : createItmNumber($$ + 1).ITM_NUMBER
-					}				
-			} )} ) if payload.OpportunityLineItems != null,
-			"ORDER_PARTNERS": {
-				"row" @(id: 1): {
-					"PARTN_ROLE": "AG",
-					"PARTN_NUMB": payload.CustomerNumber 
 				}
-			},			
-			"ORDER_TEXT": {
-				"row" @(id: 1): {
-					"TEXT_ID": "0002",
-					"LANGU": "EN",
-					"TEXT_LINE": payload.Description
-				},
-				"row" @(id: 2): {
-					"TEXT_ID": "0011",
-					"LANGU": "EN",
-					"TEXT_LINE": payload.ForecastCategory
-				},
-				"row" @(id: 3): {
-					"TEXT_ID": "0001",
-					"LANGU": "EN",
-					"TEXT_LINE": payload.Name
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		"ORDER_PARTNERS": {
+			"row" @(id: 1): {
+				"PARTN_ROLE": "AG",
+				"PARTN_NUMB": payload.CustomerNumber
+			}
+		},
+		("ORDER_SCHEDULES_IN": {
+			( convertToArray(payload.OpportunityLineItems).records map {
+				"row" : {
+					"ITM_NUMBER" : createItmNumber($$ + 1).ITM_NUMBER,
+					"REQ_QTY": $.Quantity
 				}
+			} )
+		} ) if payload.OpportunityLineItems != null,
+		"ORDER_TEXT": {
+			"row" @(id: 1): {
+				"TEXT_ID": "0002",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.Description
+			},
+			"row" @(id: 2): {
+				"TEXT_ID": "0011",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.ForecastCategory
+			},
+			"row" @(id: 3): {
+				"TEXT_ID": "0001",
+				"LANGU": "EN",
+				"TEXT_LINE": payload.Name
 			}
 		}
 	}
+}
 ]]></ee:set-payload>
 								</ee:message>
 							</ee:transform>
 							<logger level="INFO" doc:name="Log Opportunities to create" doc:id="9c0a156b-90cc-404f-b003-3d43fbd5fa5f" message="Opportunities to create: #[payload]"/>
-							<sap:execute-synchronous-remote-function-call key="BAPI_SALESORDER_CREATEFROMDAT2" doc:name="BAPI_SALESORDER_CREATEFROMDAT2" doc:id="f91c16df-5450-42ab-8828-a3ce49d17566" config-ref="SAP_Outbound" />
+							<try doc:name="Try" doc:id="15a95111-e63f-48f3-8e35-4839ed838806" transactionalAction="ALWAYS_BEGIN">
+								<sap:execute-synchronous-remote-function-call key="BAPI_SALESORDER_CREATEFROMDAT2" doc:name="BAPI_SALESORDER_CREATEFROMDAT2" doc:id="f91c16df-5450-42ab-8828-a3ce49d17566" config-ref="SAP_Outbound" transactionalAction="ALWAYS_JOIN"/>
+							</try>
 						</when>
 						<otherwise>
 							<ee:transform doc:name="Transform Opportunity to BAPI_SALESORDER_CHANGE" doc:id="8312791e-fafd-4ebc-a95d-4fc7ab46250d" >
@@ -359,10 +367,10 @@ fun createNextItmNumber(position) = {
 				"WAR_DATE": "X",
 				"CURRENCY": "X"
 			},
-			"ALESDOCUMENT": payload.SALESDOCUMENT
+			"SALESDOCUMENT": payload.SALESDOCUMENT
 		},
 		"tables": {
-			("ORDER_ITEM_IN": {( (convertToArray(payload.OpportunityLineItems.records).records map {
+			("ORDER_ITEM_IN": {( (convertToArray(payload.OpportunityLineItems).records map {
 				"row": {
 					"ITM_NUMBER": createNextItmNumber($$ + 1).ITM_NUMBER,
 					"MATERIAL": $.PricebookEntry.Product2."sap_external_id__c",
@@ -374,7 +382,7 @@ fun createNextItmNumber(position) = {
 				}									
 			}) )} ) if (payload.OpportunityLineItems != null and payload.salesOrderInSap.Items != null),
 			
-			("ORDER_ITEM_IN": {( convertToArray(payload.OpportunityLineItems.records).records map {
+			("ORDER_ITEM_IN": {( convertToArray(payload.OpportunityLineItems).records map {
 				"row": {
 					"ITM_NUMBER": createNextItmNumber($$ + 1).ITM_NUMBER,
 					"MATERIAL": $.PricebookEntry.Product2."sap_external_id__c",
@@ -392,7 +400,7 @@ fun createNextItmNumber(position) = {
 				"row": {
 					"ITM_NUMBER": $.ITM_NUMBER,
 					UPDATEFLAG: "D"
-				}}) ++ (convertToArray(payload.OpportunityLineItems.records).records map {
+				}}) ++ (convertToArray(payload.OpportunityLineItems).records map {
 				"row": {
 					"ITM_NUMBER": createNextItmNumber($$ + 1).ITM_NUMBER,
 					"UPDATEFLAG": "I",
@@ -401,7 +409,7 @@ fun createNextItmNumber(position) = {
 				}				
 			}) )} ) if (payload.OpportunityLineItems != null and payload.salesOrderInSap.Items != null),
 			
-			("ORDER_ITEM_INX": {( convertToArray(payload.OpportunityLineItems.records).records map {
+			("ORDER_ITEM_INX": {( convertToArray(payload.OpportunityLineItems).records map {
 				"row": {
 					"ITM_NUMBER": createNextItmNumber($$ + 1).ITM_NUMBER,
 					"UPDATEFLAG": "I",
@@ -438,8 +446,10 @@ fun createNextItmNumber(position) = {
 	}	]]></ee:set-payload>
 								</ee:message>
 							</ee:transform>
-							<logger level="INFO" doc:name="Log Opportunities to update" doc:id="a67fe6f2-135f-4686-b7e6-dcdbe3136a33" message="Opportunities to update: #[payload]" />
-							<sap:execute-synchronous-remote-function-call key="BAPI_SALESORDER_CHANGE" doc:name="BAPI_SALESORDER_CHANGE" doc:id="9539e09d-6f39-4dcf-bacb-4f6f218d33a3" config-ref="SAP_Outbound" />
+							<logger level="INFO" doc:name="Log Opportunities to update" doc:id="a67fe6f2-135f-4686-b7e6-dcdbe3136a33" message="Opportunities to update: #[output application/json --- payload]" />
+							<try doc:name="Try" doc:id="3025b077-03d6-4499-936d-1183dd78fad7" transactionalAction="ALWAYS_BEGIN">
+								<sap:execute-synchronous-remote-function-call key="BAPI_SALESORDER_CHANGE" doc:name="BAPI_SALESORDER_CHANGE" doc:id="9539e09d-6f39-4dcf-bacb-4f6f218d33a3" config-ref="SAP_Outbound" transactionalAction="ALWAYS_JOIN"/>
+							</try>
 						</otherwise>
 					</choice>
             </batch:step>
